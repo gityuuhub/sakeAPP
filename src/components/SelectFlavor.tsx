@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Grid from '@mui/material/Grid';
 import Slider from '@mui/material/Slider';
 import Button from '@material-ui/core/Button';
 
 import { getApiUrlFlavorCharts, getApiUrlBrands } from './getApiUrl';
+import { MainContext } from '../providers/mainProvider';
 
 const getBrandsDetailData = (stubMode: boolean): Promise<number[][]> => {
   // APIの実行完了を待たせる
@@ -61,11 +62,11 @@ const getBrandName = (stubMode: boolean, brandId: number): Promise<string> => {
 
 type PropsType = {
   setNowStep: (param: number) => void;
-  stubMode: boolean;
 };
 
 export const SelectFlavor: React.FC<PropsType> = (props: PropsType) => {
-  const { setNowStep, stubMode } = props;
+  const { setNowStep } = props;
+  const { stubMode } = useContext(MainContext);
 
   // 入力された好みのフレーバーデータ
   const [inputLikeFlavor, setInputLikeFlavor] = useState<{ [key: string]: number }>({});

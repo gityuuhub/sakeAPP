@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Grid from '@mui/material/Grid';
 import { DataGrid } from '@material-ui/data-grid';
 
 import { getApiUrlRankings, getApiUrlBrands } from './getApiUrl';
+import { MainContext } from '../providers/mainProvider';
 
-type PropsType = {
-  stubMode: boolean;
-};
-
-export const RankingArea: React.FC<PropsType> = (props: PropsType) => {
-  const { stubMode } = props;
-
+export const RankingArea = () => {
+  const { stubMode } = useContext(MainContext);
   // ランキング一覧
   const [rankings, setRankings] = useState<{ [key: string]: number }[]>([]);
 

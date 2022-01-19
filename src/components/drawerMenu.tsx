@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, Drawer, FormGroup, FormControlLabel, Switch } from '@material-ui/core';
 import Box from '@mui/material/Box';
 import {
@@ -7,6 +7,7 @@ import {
   getApiUrlSakenowaBreweries,
   getApiUrlSakenowaFlavorCharts,
 } from './getApiUrl';
+import { MainContext } from '../providers/mainProvider';
 
 // ドローワーメニューのスタイル
 const menuStyle = {
@@ -15,14 +16,13 @@ const menuStyle = {
 };
 
 type PropsType = {
-  stubMode: boolean;
-  setStubMode: (param: boolean) => void;
   drawerOpen: boolean;
   setDrawerOpen: (pram: boolean) => void;
 };
 
 export const DrawerMenu: React.FC<PropsType> = (props: PropsType) => {
-  const { stubMode, setStubMode, drawerOpen, setDrawerOpen } = props;
+  const { drawerOpen, setDrawerOpen } = props;
+  const { stubMode, setStubMode } = useContext(MainContext);
 
   // ドロワーメニューの開閉状態変更
   const drawerToggleOpen = () => {

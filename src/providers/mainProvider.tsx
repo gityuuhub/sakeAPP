@@ -1,9 +1,14 @@
 // グローバルステート管理用プロバイダー
 import { createContext, useState } from 'react';
 
-export const MainContext = createContext({});
+type mainContextType = {
+  stubMode: boolean;
+  setStubMode: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-export const MainProvider = (props) => {
+export const MainContext = createContext({} as mainContextType);
+
+export const MainProvider = (props: any) => {
   const { children } = props;
 
   // スタブモードのフラグ管理

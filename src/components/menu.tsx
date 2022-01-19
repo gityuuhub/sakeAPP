@@ -15,22 +15,12 @@ type PropsType = {
   contentsShowFlag: ContentsShoFlagType;
   setContentsShowFlag: (param: ContentsShoFlagType) => void;
   setNowStep: (param: number) => void;
-  stubMode: boolean;
-  setStubMode: (param: boolean) => void;
   drawerOpen: boolean;
   setDrawerOpen: (param: boolean) => void;
 };
 
 export const Menu: React.FC<PropsType> = (props: PropsType) => {
-  const {
-    contentsShowFlag,
-    setContentsShowFlag,
-    setNowStep,
-    stubMode,
-    setStubMode,
-    drawerOpen,
-    setDrawerOpen,
-  } = props;
+  const { contentsShowFlag, setContentsShowFlag, setNowStep, drawerOpen, setDrawerOpen } = props;
 
   const onClickArea = () => {
     // ステップバーの表示を更新
@@ -92,12 +82,7 @@ export const Menu: React.FC<PropsType> = (props: PropsType) => {
           ランキング
         </Button>
       </Box>
-      <DrawerMenu
-        stubMode={stubMode}
-        setStubMode={setStubMode}
-        drawerOpen={drawerOpen}
-        setDrawerOpen={setDrawerOpen}
-      />
+      <DrawerMenu drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
     </>
   );
 };

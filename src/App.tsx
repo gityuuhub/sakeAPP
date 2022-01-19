@@ -25,10 +25,6 @@ export const App: React.FC = () => {
   // ステップバーの現在の段階
   const [nowStep, setNowStep] = useState(0);
 
-  // スタブモードの状態を保持
-  // mainProvider.tsxでグローバルステート化予定。完了すれば、以下は削除
-  const [stubMode, setStubMode] = useState(true);
-
   // ドロワーメニューの開閉状態
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -48,8 +44,6 @@ export const App: React.FC = () => {
               contentsShowFlag={contentsShowFlag}
               setContentsShowFlag={setContentsShowFlag}
               setNowStep={setNowStep}
-              stubMode={stubMode}
-              setStubMode={setStubMode}
               drawerOpen={drawerOpen}
               setDrawerOpen={setDrawerOpen}
             />
@@ -66,11 +60,9 @@ export const App: React.FC = () => {
               <InitContents />
             </div>
           </Box>
-          {contentsShowFlag.areas && <SelectArea setNowStep={setNowStep} stubMode={stubMode} />}
-          {contentsShowFlag.selectFlavor && (
-            <SelectFlavor setNowStep={setNowStep} stubMode={stubMode} />
-          )}
-          {contentsShowFlag.ranking && <RankingArea stubMode={stubMode} />}
+          {contentsShowFlag.areas && <SelectArea setNowStep={setNowStep} />}
+          {contentsShowFlag.selectFlavor && <SelectFlavor setNowStep={setNowStep} />}
+          {contentsShowFlag.ranking && <RankingArea />}
           {/* フッター */}
         </Grid>
         <Grid item xs={12}>
