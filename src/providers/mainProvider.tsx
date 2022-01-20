@@ -1,6 +1,6 @@
 // グローバルステート管理用プロバイダー
 // ルーター機能も持たせる
-import { createContext, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 // グローバルステート管理の型定義
