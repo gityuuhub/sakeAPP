@@ -14,7 +14,7 @@
 ## ブランチ戦略
 
 - GitHub Flow を利用。
-  - master にの変更を検知すると pipline 稼働。
+  - master の変更を検知すると pipline 稼働。
   - feature に更新は集める
     - Fork して feature に pull request
     - 直接 Push でも OK
