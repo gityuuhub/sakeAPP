@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext,ReactNode } from 'react';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { DataGrid } from '@material-ui/data-grid';
 
 import { getApiUrlRankings, getApiUrlBrands } from '../function/getApiUrl';
 import { MainContext } from '../providers/mainProvider';
+import { DetailButton } from './DetailButton';
 
 export const RankingArea = () => {
   const { stubMode } = useContext(MainContext);
@@ -83,6 +85,14 @@ export const RankingArea = () => {
     { field: 'rank', headerName: 'ランク', width: 150 },
     { field: 'score', headerName: 'スコア', width: 150 },
     { field: 'name', headerName: '銘柄', width: 200 },
+    {
+    field: 'editBtn',
+    headerName: '詳細',
+    sortable: false,
+    width: 90,
+    disableClickEventBubbling: true,
+    renderCell: (params: any) => <DetailButton rowId={ params.id } />
+    },
   ];
 
   return (
