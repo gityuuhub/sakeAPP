@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import Slider from '@mui/material/Slider';
 import Button from '@material-ui/core/Button';
 
-import { getApiUrlFlavorCharts, getApiUrlBrands } from './getApiUrl';
+import { getApiUrlFlavorCharts, getApiUrlBrands } from '../function/getApiUrl';
 import { MainContext } from '../providers/mainProvider';
 
 const getBrandsDetailData = (stubMode: boolean): Promise<number[][]> => {

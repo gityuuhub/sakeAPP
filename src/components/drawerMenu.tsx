@@ -6,7 +6,7 @@ import {
   getApiUrlSakenowaBrands,
   getApiUrlSakenowaBreweries,
   getApiUrlSakenowaFlavorCharts,
-} from './getApiUrl';
+} from '../function/getApiUrl';
 import { MainContext } from '../providers/mainProvider';
 
 // ドローワーメニューのスタイル

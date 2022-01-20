@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import Grid from '@mui/material/Grid';
 import { DataGrid } from '@material-ui/data-grid';
 
-import { getApiUrlRankings, getApiUrlBrands } from './getApiUrl';
+import { getApiUrlRankings, getApiUrlBrands } from '../function/getApiUrl';
 import { MainContext } from '../providers/mainProvider';
 
 export const RankingArea = () => {
