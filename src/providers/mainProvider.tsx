@@ -2,7 +2,6 @@
 import React, { createContext, useState, ReactNode } from 'react';
 // ルーター機能も持たせる
 
-import React, { createContext, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 // グローバルステート管理の型定義
@@ -13,21 +12,15 @@ type mainContextType = {
   setStubMode: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-
 type PropsType = {
-  children: ReactNode
-}
-
-export const MainContext = createContext({} as mainContextType);
-
-export const MainProvider: React.FC<PropsType> = (props: any) => {
+  children: ReactNode;
+};
 
 // こいつを子コンポーネントでimportして利用する
 export const MainContext = createContext({} as mainContextType);
 
 // こいつは親コンポーネントで入れておく
-export const MainProvider = (props: any) => {
-
+export const MainProvider: React.FC<PropsType> = (props: any) => {
   const { children } = props;
 
   // スタブモードのフラグ管理
@@ -37,10 +30,8 @@ export const MainProvider = (props: any) => {
   // ついでにルートに近い位置にルーターも入れておく
   // グローバルスステートをページ単位で作って、ルーターで切り替えるなら、要書き換え
   return (
-
     <BrowserRouter>
       <MainContext.Provider value={{ stubMode, setStubMode }}>{children}</MainContext.Provider>
     </BrowserRouter>
-
   );
 };
