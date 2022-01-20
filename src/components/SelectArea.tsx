@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Button } from '@material-ui/core';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -11,15 +11,16 @@ import {
   getApiUrlFlavorCharts,
   getApiUrlFlavorTags,
   getApiUrlBrandFlavorTags,
-} from './getApiUrl';
+} from '../function/getApiUrl';
+import { MainContext } from '../providers/mainProvider';
 
 type PropsType = {
   setNowStep: (param: number) => void;
-  stubMode: boolean;
 };
 
 export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
-  const { setNowStep, stubMode } = props;
+  const { setNowStep } = props;
+  const { stubMode } = useContext(MainContext);
 
   // APIで取得してきた都道府県を挿入
   const [prefecture, setPrefecture] = useState<string[]>([]);
