@@ -1,5 +1,7 @@
 // グローバルステート管理用プロバイダー
+// ルーター機能も持たせる
 import { createContext, useState } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
 type mainContextType = {
   stubMode: boolean;
@@ -14,5 +16,9 @@ export const MainProvider = (props: any) => {
   // スタブモードのフラグ管理
   const [stubMode, setStubMode] = useState(true);
 
-  return <MainContext.Provider value={{ stubMode, setStubMode }}>{children}</MainContext.Provider>;
+  return (
+    <BrowserRouter>
+      <MainContext.Provider value={{ stubMode, setStubMode }}>{children}</MainContext.Provider>;
+    </BrowserRouter>
+  );
 };
