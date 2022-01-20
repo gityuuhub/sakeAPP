@@ -2,6 +2,8 @@ import React from 'react';
 import { ListItemButton, ListItemText } from '@mui/material';
 
 // バックログの中身
+// 変更履歴を表示するページに変更したい
+// GitHubのCommit履歴メッセージとか引っ張ってくる方法ない？？
 const backLog: { [key: string]: string }[] = [
   {
     p: 'Issuesに移行完了',

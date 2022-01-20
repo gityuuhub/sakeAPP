@@ -1,6 +1,8 @@
 // グローバルステート管理用プロバイダー
-import React, { createContext, useState, ReactNode } from 'react';
 
+// ルーター機能も持たせる
+import React, { createContext, useState, ReactNode } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 type mainContextType = {
   stubMode: boolean;
   setStubMode: React.Dispatch<React.SetStateAction<boolean>>;

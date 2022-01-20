@@ -11,7 +11,7 @@ import {
   getApiUrlFlavorCharts,
   getApiUrlFlavorTags,
   getApiUrlBrandFlavorTags,
-} from './getApiUrl';
+} from '../function/getApiUrl';
 import { MainContext } from '../providers/mainProvider';
 
 type PropsType = {
