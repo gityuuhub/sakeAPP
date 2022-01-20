@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import Box from '@mui/material/Box';
 
@@ -62,25 +63,43 @@ export const Menu: React.FC<PropsType> = (props: PropsType) => {
     <>
       <h3>メニュー</h3>
       <Box m={2}>
-        <Button style={{ width: '60%' }} variant="contained" color="primary" onClick={onClickArea}>
-          産地から選ぶ
-        </Button>
-        <Button
-          style={{ width: '60%' }}
-          variant="contained"
-          color="primary"
-          onClick={onClickFlavor}
-        >
-          フレーバーから選ぶ
-        </Button>
-        <Button
-          style={{ width: '60%' }}
-          variant="contained"
-          color="primary"
-          onClick={onClickRanking}
-        >
-          ランキング
-        </Button>
+        <Link to="/main">
+          <Button
+            style={{ width: '60%' }}
+            variant="contained"
+            color="primary"
+            onClick={onClickArea}
+          >
+            産地から選ぶ
+          </Button>
+        </Link>
+        <Link to="/main">
+          <Button
+            style={{ width: '60%' }}
+            variant="contained"
+            color="primary"
+            onClick={onClickFlavor}
+          >
+            フレーバーから選ぶ
+          </Button>
+        </Link>{' '}
+        <Link to="/main">
+          <Button
+            style={{ width: '60%' }}
+            variant="contained"
+            color="primary"
+            onClick={onClickRanking}
+          >
+            ランキング
+          </Button>
+        </Link>
+        <br />
+        <br />
+        <Link to="/database">
+          <Button style={{ width: '60%' }} variant="contained" color="primary">
+            DB登録
+          </Button>
+        </Link>
       </Box>
       <DrawerMenu drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
     </>
