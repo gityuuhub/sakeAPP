@@ -75,7 +75,7 @@ export const SelectFlavor: React.FC<PropsType> = (props: PropsType) => {
   // 一番類似度が高い銘柄
   const [similarSake, setSimilarSake] = useState<string>('一番類似度が高い銘柄');
 
-  const flavors = ['華やか', '芳醇', '濃厚', '穏やか', 'ドライ', '爽快'];
+  //  const flavors = ['華やか', '芳醇', '濃厚', '穏やか', 'ドライ', '爽快'];
 
   useEffect(() => {
     setInputLikeFlavor({ f1: 0, f2: 0, f3: 0, f4: 0, f5: 0, f6: 0 });
