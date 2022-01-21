@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 // route v5に下げて利用中。v6の記述になおしたい
 
 import Box from '@mui/material/Box';
@@ -55,8 +55,8 @@ export const App: React.FC = () => {
         {/* ステップバーとコンテンツを別ファイルにまとめてページ化したい */}
         {/* initContentsは/で別パス切るかな */}
         {/* ステップバー */}
-        <Switch>
-          <Route exact path="/main">
+        <Routes>
+          <Route path="/main">
             <Grid item xs={8}>
               <Box
                 component="span"
@@ -77,10 +77,10 @@ export const App: React.FC = () => {
             </Grid>
           </Route>
           {/* DBメニュー */}
-          <Route exact path="/database">
+          <Route path="/database">
             <h1>てすと</h1>
           </Route>
-        </Switch>
+        </Routes>
         {/* フッター */}
         <Grid item xs={12}>
           <Box component="span" m={5}>
