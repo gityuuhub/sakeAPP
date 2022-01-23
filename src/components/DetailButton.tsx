@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Button from '@mui/material/Button';
+import { GridRowId } from '@material-ui/data-grid';
 
 import { DetailDialog } from './DetailDialog';
 import { MainContext } from '../providers/mainProvider';
@@ -7,11 +8,12 @@ import { BrandDetail } from './brandDetail';
 import {getApiUrlFlavorCharts} from '../function/getApiUrl';
 
 type PropsType = {
-  rowId: number;
+  rowId: GridRowId;
 };
 
-export const DetailButton = (props: PropsType) => {
+export const DetailButton: React.FC<PropsType> = (props: PropsType) => {
   const { rowId } = props;
+  const rowIdNum = Number(rowId)!=null ? Number(rowId): -1;
   const { stubMode, flavorTags, rankings } = useContext(MainContext);
 
   const [open, setOpen] = useState(false);
@@ -22,7 +24,7 @@ export const DetailButton = (props: PropsType) => {
 
   // 詳細を押した銘柄のidと名前を取得する
   // item : {"rank": number, "score": number, "brandId": number, "id": number, "name": string}
-  const item = rankings.find((b) => b.id === rowId);
+  const item = rankings.find((b) => b.id === rowIdNum);
   let selectBrandId= -1;
   let selectBrandName="";
 
@@ -53,7 +55,7 @@ export const DetailButton = (props: PropsType) => {
 
         // 配列の中身をループで回して取得
         // 選択された銘柄のフレーバーだけを抽出
-        data.flavorCharts.map((fla: { [key: string]: any }) => {
+        data.flavorCharts.map((fla: { [key: string]: number }) => {
           // 銘柄が一致するものを抽出
           if (fla.brandId === selectBrandId) {
             setBrandDetailRadar([

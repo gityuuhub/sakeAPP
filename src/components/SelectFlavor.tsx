@@ -43,7 +43,7 @@ const getBrandName = (stubMode: boolean, brandId: number): Promise<string> => {
         return response.json();
       })
       .then((data) => {
-        data.brands.map((bra: { [key: string]: any }) => {
+        data.brands.map((bra: BrandType) => {
           // 蔵元が一致かつ銘柄が空以外を抽出
           if (bra.id === brandId) {
             // API実行後にidと一致するnameを返却
@@ -60,12 +60,7 @@ const getBrandName = (stubMode: boolean, brandId: number): Promise<string> => {
   });
 };
 
-type PropsType = {
-  setNowStep: (param: number) => void;
-};
-
-export const SelectFlavor: React.FC<PropsType> = (props: PropsType) => {
-  const { setNowStep } = props;
+export const SelectFlavor: React.FC = () => {
   const { stubMode } = useContext(MainContext);
 
   // 入力された好みのフレーバーデータ
@@ -81,29 +76,41 @@ export const SelectFlavor: React.FC<PropsType> = (props: PropsType) => {
     setInputLikeFlavor({ f1: 0, f2: 0, f3: 0, f4: 0, f5: 0, f6: 0 });
   }, []);
 
-  const onChangeFlavor1 = (event: any) => {
-    inputLikeFlavor.f1 = event.target.value;
+  const onChangeFlavor1 = (event: Event, newValue: number | number[]) => {
+    if (typeof newValue === 'number') {
+    inputLikeFlavor.f1 = newValue;
     setInputLikeFlavor(inputLikeFlavor);
+  }
   };
-  const onChangeFlavor2 = (event: any) => {
-    inputLikeFlavor.f2 = event.target.value;
+  const onChangeFlavor2 = (event: Event, newValue: number | number[]) => {
+    if (typeof newValue === 'number') {
+    inputLikeFlavor.f2 = newValue;
     setInputLikeFlavor(inputLikeFlavor);
+  }
   };
-  const onChangeFlavor3 = (event: any) => {
-    inputLikeFlavor.f3 = event.target.value;
+  const onChangeFlavor3 = (event: Event, newValue: number | number[]) => {
+    if (typeof newValue === 'number') {
+    inputLikeFlavor.f3 = newValue;
     setInputLikeFlavor(inputLikeFlavor);
+  }
   };
-  const onChangeFlavor4 = (event: any) => {
-    inputLikeFlavor.f4 = event.target.value;
+  const onChangeFlavor4 = (event: Event, newValue: number | number[]) => {
+    if (typeof newValue === 'number') {
+    inputLikeFlavor.f4 = newValue;
     setInputLikeFlavor(inputLikeFlavor);
+  }
   };
-  const onChangeFlavor5 = (event: any) => {
-    inputLikeFlavor.f5 = event.target.value;
+  const onChangeFlavor5 = (event: Event, newValue: number | number[]) => {
+    if (typeof newValue === 'number') {
+    inputLikeFlavor.f5 = newValue;
     setInputLikeFlavor(inputLikeFlavor);
+  }
   };
-  const onChangeFlavor6 = (event: any) => {
-    inputLikeFlavor.f6 = event.target.value;
+  const onChangeFlavor6 = (event: Event, newValue: number | number[]) => {
+    if (typeof newValue === 'number') {
+    inputLikeFlavor.f6 = newValue;
     setInputLikeFlavor(inputLikeFlavor);
+  }
   };
 
   // 入力値と似た銘柄を検索

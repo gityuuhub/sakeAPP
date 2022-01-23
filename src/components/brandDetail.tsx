@@ -1,7 +1,6 @@
 import React from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, Tooltip } from 'recharts';
 import BrandDetailTags from './brandDetailTags';
-import { MainContext } from '../providers/mainProvider';
 
 type PropsType = {
   brandDetailRadar: { [key: string]: string | number }[];
@@ -11,7 +10,7 @@ type PropsType = {
 
 export const BrandDetail: React.FC<PropsType> = (props: PropsType) => {
   const { brandDetailRadar,selectBrandId, flavorTags } = props;
-  
+
   return (
     <>
       <RadarChart // レーダーチャートのサイズや位置、データを指定

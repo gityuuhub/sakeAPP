@@ -185,7 +185,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
         const arrayName: Array<string> = [];
         const arrayNameId: Array<number> = [];
         const arrayNameSelectFlag: Array<boolean> = [];
-        data.brands.map((bra: { [key: string]: any }) => {
+        data.brands.map((bra: BrandType) => {
           // 蔵元が一致かつ銘柄が空以外を抽出
           if (bra.breweryId === breweries[index].id && bra.name !== '') {
             arrayName.push(bra.name);
@@ -248,7 +248,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
 
         // 配列の中身をループで回して取得
         // 選択された銘柄のフレーバーだけを抽出
-        data.flavorCharts.map((fla: { [key: string]: any }) => {
+        data.flavorCharts.map((fla: { [key: string]: number }) => {
           // 銘柄が一致するものを抽出
           if (fla.brandId === brandsId[index]) {
             setBrandDetailRadar([
@@ -283,7 +283,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
           // タグのリストをリセット
           setSelectBrandFlavorTags([]);
 
-          data.flavorTags.forEach((fla: { [key: string]: any }) => {
+          data.flavorTags.forEach((fla: BrandFlavorTag) => {
             // 銘柄が一致するものを抽出
             if (fla.brandId === brandsId[index]) {
               setSelectBrandFlavorTags(fla.tagIds);
@@ -358,7 +358,6 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
         <Box component="span" m={1} style={{ display: brandDetailShowFlag ? '' : 'none' }}>
           <div>
             <h3>銘柄詳細</h3>
-            {selectBrandId}
             <BrandDetail
               brandDetailRadar={brandDetailRadar}
               selectBrandId={selectBrandId}

@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext, ReactNode } from 'react';
-import Button from '@mui/material/Button';
+import React, { ReactNode } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -14,7 +13,7 @@ type PropsType = {
   title?: string;
 };
 
-export const DetailDialog = (props: PropsType) => {
+export const DetailDialog: React.FC<PropsType> = (props: PropsType) => {
   const { children, open, handleClose, title } = props;
 
   return (

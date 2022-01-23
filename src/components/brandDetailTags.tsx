@@ -33,7 +33,7 @@ useEffect(() => {
     .then((data) => {
       console.log(data.flavorTags);
 
-      data.flavorTags.map((fla: { [key: string]: any }) => {
+      data.flavorTags.map((fla: BrandFlavorTag) => {
         // 銘柄が一致するものを抽出
         if (fla.brandId === selectBrandId) {
           console.log("一致したものあった")

@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useContext, ReactNode } from 'react';
-import Button from '@mui/material/Button';
+import React, { useEffect, useContext } from 'react';
 import Grid from '@mui/material/Grid';
-import { DataGrid } from '@material-ui/data-grid';
+import { DataGrid, GridCellParams } from '@material-ui/data-grid';
 
 import { getApiUrlRankings, getApiUrlBrands, getApiUrlFlavorTags} from '../function/getApiUrl';
 import { MainContext } from '../providers/mainProvider';
 import { DetailButton } from './DetailButton';
 
-export const RankingArea = () => {
+export const RankingArea: React.FC = () => {
   const { stubMode, allBrands, setAllBrands, rankings, setRankings, flavorTags, setFlavorTags } = useContext(MainContext);
 
   useEffect(() => {
@@ -28,7 +27,6 @@ export const RankingArea = () => {
               // {name: bra.name, id: bra.id, breweryId: bra.breweryId}
               array.push(bra);
             }
-            return 0;
           });
           // API実行結果をallBrandsに格納
           setAllBrands(array);
@@ -73,7 +71,7 @@ export const RankingArea = () => {
         })
         .then((data) => {
           // DataGridを使うためにユニークID付与
-          data.overall.map((item: { [key: string]: any }, index: number) => {
+          data.overall.map((item: Ranking, index: number) => {
             item.id = index;
             // 小数点第3位を四捨五入
             item.score = Math.round(item.score * 100) / 100;
@@ -110,7 +108,7 @@ export const RankingArea = () => {
       sortable: false,
       width: 90,
       disableClickEventBubbling: true,
-      renderCell: (params: any) => <DetailButton rowId={params.id} />,
+      renderCell: (params: GridCellParams) => <DetailButton rowId={params.id} />,
     },
   ];
 

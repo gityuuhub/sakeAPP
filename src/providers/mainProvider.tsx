@@ -28,7 +28,7 @@ type PropsType = {
 export const MainContext = createContext({} as mainContextType);
 
 // こいつは親コンポーネントで入れておく
-export const MainProvider: React.FC<PropsType> = (props: any) => {
+export const MainProvider: React.FC<PropsType> = (props: PropsType) => {
   const { children } = props;
 
   // スタブモードのフラグ管理
