@@ -10,6 +10,8 @@ import { BrowserRouter } from 'react-router-dom';
 type mainContextType = {
   stubMode: boolean;
   setStubMode: React.Dispatch<React.SetStateAction<boolean>>;
+  allBrands: BrandType[];
+  setAllBrands: (param: BrandType[]) => void;
   rankings: { [key: string]: number }[];
   setRankings: (param: { [key: string]: number }[]) => void;
 };
@@ -28,6 +30,9 @@ export const MainProvider: React.FC<PropsType> = (props: any) => {
   // スタブモードのフラグ管理
   const [stubMode, setStubMode] = useState(true);
 
+  // 全銘柄一覧 {name: string, id: number}
+  const [allBrands, setAllBrands] = useState<BrandType[]>([]);
+
   // ランキング一覧
   const [rankings, setRankings] = useState<{ [key: string]: number }[]>([]);
 
@@ -35,6 +40,8 @@ export const MainProvider: React.FC<PropsType> = (props: any) => {
   const value = {
     stubMode,
     setStubMode,
+    allBrands,
+    setAllBrands,
     rankings,
     setRankings
   }

@@ -8,46 +8,43 @@ import { MainContext } from '../providers/mainProvider';
 import { DetailButton } from './DetailButton';
 
 export const RankingArea = () => {
-  const { stubMode, rankings, setRankings } = useContext(MainContext);
-
-  // 銘柄一覧
-  const [brands, setBrands] = useState<string[]>([]);
-  // 銘柄一覧のID。上記とまとめてOBJ化したい
-  const [brandsId, setBrandsId] = useState<number[]>([]);
+  const { stubMode, allBrands, setAllBrands, rankings, setRankings } = useContext(MainContext);
 
   useEffect(() => {
+    // 銘柄一覧取得を一度もしていなかったら
+    if(allBrands.length === 0) {
     // 銘柄一覧の取得
+    console.log("銘柄一覧の取得する！！！")
     fetch(getApiUrlBrands(stubMode), { mode: 'cors' })
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        const arrayName: Array<string> = [];
-        const arrayNameId: Array<number> = [];
+        const array: Array<BrandType> = [];
         data.brands.map((bra: { [key: string]: any }) => {
           // 銘柄が空以外を抽出
           if (bra.name !== '') {
-            arrayName.push(bra.name);
-            arrayNameId.push(bra.id);
+            // 銘柄名と銘柄idを1つのOBJ化
+            const brand = {name: bra.name, id: bra.id}
+            array.push(brand)
           }
           return 0;
         });
-        // API実行結果をbrandsに格納
-        setBrands(arrayName); // 選択した銘柄のname配列
-        // console.log(arrayName);
-        setBrandsId(arrayNameId); // 選択した銘柄のid配列
+        // API実行結果をallBrandsに格納
+        setAllBrands(array);
       })
       .catch((error) => {
         console.log(error);
         // alert('API実行時はCORS問題を解決すること。');
         console.log('失敗しました');
       });
+    }
   }, []);
 
   // APIでよびだした値をcontextに入れた
   useEffect(() => {
     // ランキング取得を一度もしていなかったら
-    if(rankings.length === 0 && brandsId.length > 0) {
+    if(rankings.length === 0 && allBrands.length > 0) {
     // ランキング一覧の取得
     fetch(getApiUrlRankings(stubMode), { mode: 'cors' })
       .then((response) => {
@@ -62,10 +59,10 @@ export const RankingArea = () => {
           item.score = Math.round(item.score * 100) / 100;
 
           // 銘柄名を探す
-          const brand = brandsId.findIndex((b) => b === item.brandId);
+          const brand = allBrands.findIndex((b) => b.id === item.brandId);
 
           if (brand) {
-            item.name = brands[brand];
+            item.name = allBrands[brand].name;
           }
           // {"rank": number, "score": number, "brandId": number, "id": number, "name": string}
         });
@@ -80,7 +77,7 @@ export const RankingArea = () => {
         console.log('失敗しました');
       });
     }
-  }, [brandsId]);
+  }, [allBrands]);
 
   // ランキング表のカラム
   const columns = [
