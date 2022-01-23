@@ -20,7 +20,7 @@ type PropsType = {
 
 export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
   const { setNowStep } = props;
-  const { stubMode, prefectures, setPrefectures } = useContext(MainContext);
+  const { stubMode, prefectures, setPrefectures, flavorTags, setFlavorTags } = useContext(MainContext);
 
   // 都道府県の選択フラグ
   const [prefectureSelectFlag, setPrefectureSelectFlag] = useState<boolean[]>([]);
@@ -44,8 +44,6 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
   const [selectBrandId, setSelectBrandId] = useState(0);
   // 選択した銘柄のフレーバータグ配列
   const [selectBrandFlavorTags, setSelectBrandFlavorTags] = useState<number[]>([]);
-  // apiから取得したフレーバータグ一覧  {"id": number, "tag": string}
-  const [flavorTags, setFlavorTags] = useState<{ [key: string]: string | number }[]>([]);
 
   // 銘柄詳細エリアの制御フラグ
   const [brandDetailShowFlag, setBrandDetailShowFlag] = useState(false);
@@ -88,8 +86,9 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
         });
     }
 
+    // フレーバータグ一覧を一度も取得していなかったら
+    if (flavorTags.length === 0) {
     // フレーバータグ一覧の取得
-    // 初回レンダリングの際にapi呼び出ししてflavorTagsにセット
     fetch(getApiUrlFlavorTags(stubMode), { mode: 'cors' })
       .then((response) => {
         return response.json();
@@ -106,6 +105,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
         alert('flavor-tagsでAPI実行時に失敗');
         console.log('失敗しました');
       });
+    }
   }, []);
 
   // 産地選択後に銘柄を取得する
@@ -358,9 +358,10 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
         <Box component="span" m={1} style={{ display: brandDetailShowFlag ? '' : 'none' }}>
           <div>
             <h3>銘柄詳細</h3>
+            {selectBrandId}
             <BrandDetail
               brandDetailRadar={brandDetailRadar}
-              selectBrandFlavorTags={selectBrandFlavorTags}
+              selectBrandId={selectBrandId}
               flavorTags={flavorTags}
             ></BrandDetail>
           </div>

@@ -3,12 +3,12 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { DataGrid } from '@material-ui/data-grid';
 
-import { getApiUrlRankings, getApiUrlBrands } from '../function/getApiUrl';
+import { getApiUrlRankings, getApiUrlBrands, getApiUrlFlavorTags} from '../function/getApiUrl';
 import { MainContext } from '../providers/mainProvider';
 import { DetailButton } from './DetailButton';
 
 export const RankingArea = () => {
-  const { stubMode, allBrands, setAllBrands, rankings, setRankings } = useContext(MainContext);
+  const { stubMode, allBrands, setAllBrands, rankings, setRankings, flavorTags, setFlavorTags } = useContext(MainContext);
 
   useEffect(() => {
     // 全銘柄一覧取得を一度もしていなかったら
@@ -38,6 +38,26 @@ export const RankingArea = () => {
           // alert('API実行時はCORS問題を解決すること。');
           console.log('失敗しました');
         });
+    }
+    // フレーバータグ一覧を一度も取得していなかったら
+    if (flavorTags.length === 0) {
+    // フレーバータグ一覧の取得
+    fetch(getApiUrlFlavorTags(stubMode), { mode: 'cors' })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        // console.log('flavor-tags(フレーバータグ一覧):');
+        // console.log(data);
+        // console.log('フレーバータグ一覧取り出す');
+        // console.log(data.tags);
+        setFlavorTags(data.tags);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert('flavor-tagsでAPI実行時に失敗');
+        console.log('失敗しました');
+      });
     }
   }, []);
 

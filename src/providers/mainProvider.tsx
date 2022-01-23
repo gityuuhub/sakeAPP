@@ -12,10 +12,12 @@ type mainContextType = {
   setStubMode: React.Dispatch<React.SetStateAction<boolean>>;
   prefectures: Area[];
   setPrefectures: (param: Area[]) => void;
+  flavorTags: FlavorTag[];
+  setFlavorTags: (param: FlavorTag[]) => void;
   allBrands: BrandType[];
   setAllBrands: (param: BrandType[]) => void;
-  rankings: { [key: string]: number }[];
-  setRankings: (param: { [key: string]: number }[]) => void;
+  rankings: Ranking[];
+  setRankings: (param: Ranking[]) => void;
 };
 
 type PropsType = {
@@ -37,11 +39,14 @@ export const MainProvider: React.FC<PropsType> = (props: any) => {
   // 都道府県idと都道府県名をOBJ化
   const [prefectures, setPrefectures] = useState<Area[]>([]);
 
+  // フレーバータグ一覧  {"id": number, "tag": string}
+  const [flavorTags, setFlavorTags] = useState<FlavorTag[]>([]);
+
   // 全銘柄一覧 {name: string, id: number}
   const [allBrands, setAllBrands] = useState<BrandType[]>([]);
 
   // ランキング一覧
-  const [rankings, setRankings] = useState<{ [key: string]: number }[]>([]);
+  const [rankings, setRankings] = useState<Ranking[]>([]);
 
   // 数が多くなったのでvalueの値を変数にいれる
   const value = {
@@ -49,6 +54,8 @@ export const MainProvider: React.FC<PropsType> = (props: any) => {
     setStubMode,
     prefectures,
     setPrefectures,
+    flavorTags,
+    setFlavorTags,
     allBrands,
     setAllBrands,
     rankings,
