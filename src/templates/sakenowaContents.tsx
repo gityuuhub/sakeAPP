@@ -19,7 +19,7 @@ type PropsType = {
   setNowStep: (param: number) => void;
 };
 
-export const SakenowaContent = (props: PropsType) => {
+export const SakenowaContent: React.FC<PropsType> = (props: PropsType) => {
   const { contentsShowFlag, nowStep, setNowStep } = props;
 
   return (
@@ -34,7 +34,7 @@ export const SakenowaContent = (props: PropsType) => {
         </div>
       </Box>
       {contentsShowFlag.areas && <SelectArea setNowStep={setNowStep} />}
-      {contentsShowFlag.selectFlavor && <SelectFlavor setNowStep={setNowStep} />}
+      {contentsShowFlag.selectFlavor && <SelectFlavor />}
       {contentsShowFlag.ranking && <RankingArea />}
     </>
   );

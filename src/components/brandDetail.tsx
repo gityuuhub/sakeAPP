@@ -4,12 +4,13 @@ import BrandDetailTags from './brandDetailTags';
 
 type PropsType = {
   brandDetailRadar: { [key: string]: string | number }[];
-  selectBrandFlavorTags: number[];
-  flavorTags: { [key: string]: string | number }[];
+  selectBrandId: number;
+  flavorTags: FlavorTag[];
 };
 
 export const BrandDetail: React.FC<PropsType> = (props: PropsType) => {
-  const { brandDetailRadar, selectBrandFlavorTags, flavorTags } = props;
+  const { brandDetailRadar,selectBrandId, flavorTags } = props;
+
   return (
     <>
       <RadarChart // レーダーチャートのサイズや位置、データを指定
@@ -34,7 +35,7 @@ export const BrandDetail: React.FC<PropsType> = (props: PropsType) => {
         {/* hoverすると各パラメーターの値が表示される */}
         <Tooltip />
       </RadarChart>
-      <BrandDetailTags selectBrandFlavorTags={selectBrandFlavorTags} flavorTags={flavorTags} />
+      <BrandDetailTags flavorTags={flavorTags} selectBrandId={selectBrandId} />
     </>
   );
 };
