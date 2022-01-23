@@ -1,5 +1,6 @@
 
 type BrandType = {
-  name: string
   id: number
+  name: string
+  breweryId: number
 }

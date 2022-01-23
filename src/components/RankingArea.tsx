@@ -11,9 +11,9 @@ export const RankingArea = () => {
   const { stubMode, allBrands, setAllBrands, rankings, setRankings } = useContext(MainContext);
 
   useEffect(() => {
-    // 銘柄一覧取得を一度もしていなかったら
+    // 全銘柄一覧取得を一度もしていなかったら
     if(allBrands.length === 0) {
-    // 銘柄一覧の取得
+    // 全銘柄一覧の取得
     console.log("銘柄一覧の取得する！！！")
     fetch(getApiUrlBrands(stubMode), { mode: 'cors' })
       .then((response) => {
@@ -21,12 +21,12 @@ export const RankingArea = () => {
       })
       .then((data) => {
         const array: Array<BrandType> = [];
-        data.brands.map((bra: { [key: string]: any }) => {
+        data.brands.map((bra: BrandType) => {
           // 銘柄が空以外を抽出
           if (bra.name !== '') {
-            // 銘柄名と銘柄idを1つのOBJ化
-            const brand = {name: bra.name, id: bra.id}
-            array.push(brand)
+            // 銘柄名と銘柄idと蔵元idを1つのOBJ化
+            // {name: bra.name, id: bra.id, breweryId: bra.breweryId}
+            array.push(bra)
           }
           return 0;
         });

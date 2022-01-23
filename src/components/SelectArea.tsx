@@ -23,10 +23,9 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
   const { stubMode } = useContext(MainContext);
 
   // APIで取得してきた都道府県を挿入
-  const [prefecture, setPrefecture] = useState<string[]>([]);
-  // APIで取得した都道府県のID。上記とまとめてOBJ化したい。
   // 配列をpropsで渡しても元値を上書きできないのでuseState使う
-  const [prefectureId, setPrefectureId] = useState<number[]>([]);
+  // 都道府県idと都道府県名をOBJ化
+  const [prefectures, setPrefectures] = useState<Area[]>([]);
 
   // 都道府県の選択フラグ
   const [prefectureSelectFlag, setPrefectureSelectFlag] = useState<boolean[]>([]);
@@ -71,18 +70,15 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
       })
       .then((data) => {
         // 配列の中身をループで回して取得
-        const arrayPre: Array<string> = [];
-        const arrayPreId: Array<number> = [];
+        const array: Array<Area> = [];
         const arrayPrefectureSelectFlag: Array<boolean> = [];
-        data.areas.map((areas: { [key: string]: any }) => {
-          arrayPre.push(areas.name);
-          arrayPreId.push(areas.id);
+        data.areas.map((area: Area) => {
+          array.push(area);
           arrayPrefectureSelectFlag.push(false);
           return 0;
         });
         // API実行結果をpropsに格納
-        setPrefecture(arrayPre);
-        setPrefectureId(arrayPreId);
+        setPrefectures(array);
         setPrefectureSelectFlag(arrayPrefectureSelectFlag);
         // console.log('都道府県一覧を取得');
         // console.log(arrayPre);
@@ -151,7 +147,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
         const arrayNameSelectFlag: Array<boolean> = [];
         data.breweries.map((bre: { [key: string]: any }) => {
           // 地域が一致かつ蔵元名が空以外を抽出
-          if (bre.areaId === prefectureId[index] && bre.name !== '') {
+          if (bre.areaId === prefectures[index].id && bre.name !== '') {
             arrayName.push(bre.name);
             arrayNameId.push(bre.id);
             arrayNameSelectFlag.push(false);
@@ -319,7 +315,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
         <Box component="span" m={1}>
           <div>
             <h3>都道府県から探す</h3>
-            {prefecture.map((pre, index) => {
+            {prefectures.map((pre, index) => {
               return (
                 <Button
                   key={index} // key変更
@@ -328,7 +324,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
                   style={{ width: 100 }}
                   onClick={() => onClickBreweriesGet(index)}
                 >
-                  {pre}
+                  {pre.name}
                 </Button>
               );
             })}
