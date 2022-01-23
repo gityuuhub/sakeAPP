@@ -14,9 +14,19 @@
 // 　　　　　　　　body{"brandId":"0","comment":"レモンサワーからの梅酒（売り切れ直前）"}
 // ノーガードなので変なアクセス受けると店じまい予定。
 
-export const urlList = {
+const urlList = {
   // 通常モードの時に呼び出すURL
   sakeOneCommnet:
     'https://2ygmpjbho2.execute-api.ap-northeast-1.amazonaws.com/dynamoAPI/sakeonecomment',
   hogehoge: 'なんか作ればURL',
+};
+
+type PropsType = {
+  selectBrandId: number;
+};
+
+export const getOneComment = (props: PropsType) => {
+  const { selectBrandId } = props;
+  const comment = 'おいしかった';
+  return comment;
 };
