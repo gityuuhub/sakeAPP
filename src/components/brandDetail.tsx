@@ -1,6 +1,7 @@
 import React from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, Tooltip } from 'recharts';
 import BrandDetailTags from './brandDetailTags';
+import BrandOneComment from './brandOneComment';
 
 type PropsType = {
   brandDetailRadar: { [key: string]: string | number }[];
@@ -9,7 +10,7 @@ type PropsType = {
 };
 
 export const BrandDetail: React.FC<PropsType> = (props: PropsType) => {
-  const { brandDetailRadar,selectBrandId, flavorTags } = props;
+  const { brandDetailRadar, selectBrandId, flavorTags } = props;
 
   return (
     <>
@@ -36,6 +37,7 @@ export const BrandDetail: React.FC<PropsType> = (props: PropsType) => {
         <Tooltip />
       </RadarChart>
       <BrandDetailTags flavorTags={flavorTags} selectBrandId={selectBrandId} />
+      <BrandOneComment selectBrandId={selectBrandId} />
     </>
   );
 };
