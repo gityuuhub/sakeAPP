@@ -25,10 +25,8 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
   // 都道府県の選択フラグ
   const [prefectureSelectFlag, setPrefectureSelectFlag] = useState<boolean[]>([]);
 
-  // 蔵元一覧
-  const [breweries, setBreweries] = useState<string[]>([]);
-  // 蔵元一覧のID。上記とまとめてOBJ化したい
-  const [breweriesId, setBreweriesId] = useState<number[]>([]);
+  // 蔵元一覧 まとめてOBJ化
+  const [breweries, setBreweries] = useState<Brewery[]>([]);
   // 蔵元の選択フラグ
   const [breweriesSelectFlag, setBreweriesSelectFlag] = useState<boolean[]>([]);
 
@@ -136,26 +134,20 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
         // APIレスポンスはresponse.breweries[n]{id:1, name:蔵元, areaId:地域一覧のID}
       })
       .then((data) => {
-        // ToDo API実行を1回だけにしたい。
-        // 実行有無フラグをグローバルに持たせて、OBJはディープコピーすること。
-        // 一度OBJをJSON形式に戻して再代入するとスムーズ。
         // 配列の中身をループで回して取得
         // 選択された産地の蔵元だけを抽出
-        const arrayName: Array<string> = [];
-        const arrayNameId: Array<number> = [];
+        const array: Array<Brewery> = [];
         const arrayNameSelectFlag: Array<boolean> = [];
-        data.breweries.map((bre: { [key: string]: any }) => {
+        data.breweries.map((bre: Brewery) => {
           // 地域が一致かつ蔵元名が空以外を抽出
           if (bre.areaId === prefectures[index].id && bre.name !== '') {
-            arrayName.push(bre.name);
-            arrayNameId.push(bre.id);
+            array.push(bre);
             arrayNameSelectFlag.push(false);
           }
           return 0;
         });
         // API実行結果をbreweriesに格納
-        setBreweries(arrayName);
-        setBreweriesId(arrayNameId);
+        setBreweries(array);
         setBreweriesSelectFlag(arrayNameSelectFlag);
       })
       .catch((error) => {
@@ -195,7 +187,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
         const arrayNameSelectFlag: Array<boolean> = [];
         data.brands.map((bra: { [key: string]: any }) => {
           // 蔵元が一致かつ銘柄が空以外を抽出
-          if (bra.breweryId === breweriesId[index] && bra.name !== '') {
+          if (bra.breweryId === breweries[index].id && bra.name !== '') {
             arrayName.push(bra.name);
             arrayNameId.push(bra.id);
             arrayNameSelectFlag.push(false);
@@ -340,7 +332,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
                   disabled={breweriesSelectFlag[index]}
                   onClick={() => onClickBrandsGet(index)}
                 >
-                  {bre}
+                  {bre.name}
                 </Button>
               );
             })}
