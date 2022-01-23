@@ -20,12 +20,7 @@ type PropsType = {
 
 export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
   const { setNowStep } = props;
-  const { stubMode } = useContext(MainContext);
-
-  // APIで取得してきた都道府県を挿入
-  // 配列をpropsで渡しても元値を上書きできないのでuseState使う
-  // 都道府県idと都道府県名をOBJ化
-  const [prefectures, setPrefectures] = useState<Area[]>([]);
+  const { stubMode, prefectures, setPrefectures } = useContext(MainContext);
 
   // 都道府県の選択フラグ
   const [prefectureSelectFlag, setPrefectureSelectFlag] = useState<boolean[]>([]);
@@ -62,34 +57,38 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
   const [brandsShowFlag, setBrandsShowFlag] = useState(false);
 
   useEffect(() => {
-    // 都道府県一覧の取得
-    fetch(getApiUrlAreas(stubMode), { mode: 'cors' })
-      .then((response) => {
-        return response.json();
-        // APIレスポンスはresponse.areas[n]{id:1, name:北海道}
-      })
-      .then((data) => {
-        // 配列の中身をループで回して取得
-        const array: Array<Area> = [];
-        const arrayPrefectureSelectFlag: Array<boolean> = [];
-        data.areas.map((area: Area) => {
-          array.push(area);
-          arrayPrefectureSelectFlag.push(false);
-          return 0;
+    // 都道府県を一度も取得していなかったら
+    if (prefectures.length === 0) {
+      // 都道府県一覧の取得
+      console.log('都道府県一覧取得する！！！');
+      fetch(getApiUrlAreas(stubMode), { mode: 'cors' })
+        .then((response) => {
+          return response.json();
+          // APIレスポンスはresponse.areas[n]{id:1, name:北海道}
+        })
+        .then((data) => {
+          // 配列の中身をループで回して取得
+          const array: Array<Area> = [];
+          const arrayPrefectureSelectFlag: Array<boolean> = [];
+          data.areas.map((area: Area) => {
+            array.push(area);
+            arrayPrefectureSelectFlag.push(false);
+            return 0;
+          });
+          // API実行結果をpropsに格納
+          setPrefectures(array);
+          setPrefectureSelectFlag(arrayPrefectureSelectFlag);
+          // console.log('都道府県一覧を取得');
+          // console.log(arrayPre);
+        })
+        .catch((error) => {
+          console.log(error);
+          // alert(
+          //   'API実行時はCORS問題を解決すること。 --disable-web-security --user-data-dir="ディレクトリ"',
+          // );
+          console.log('失敗しました');
         });
-        // API実行結果をpropsに格納
-        setPrefectures(array);
-        setPrefectureSelectFlag(arrayPrefectureSelectFlag);
-        // console.log('都道府県一覧を取得');
-        // console.log(arrayPre);
-      })
-      .catch((error) => {
-        console.log(error);
-        // alert(
-        //   'API実行時はCORS問題を解決すること。 --disable-web-security --user-data-dir="ディレクトリ"',
-        // );
-        console.log('失敗しました');
-      });
+    }
 
     // フレーバータグ一覧の取得
     // 初回レンダリングの際にapi呼び出ししてflavorTagsにセット

@@ -10,6 +10,8 @@ import { BrowserRouter } from 'react-router-dom';
 type mainContextType = {
   stubMode: boolean;
   setStubMode: React.Dispatch<React.SetStateAction<boolean>>;
+  prefectures: Area[];
+  setPrefectures: (param: Area[]) => void;
   allBrands: BrandType[];
   setAllBrands: (param: BrandType[]) => void;
   rankings: { [key: string]: number }[];
@@ -30,6 +32,11 @@ export const MainProvider: React.FC<PropsType> = (props: any) => {
   // スタブモードのフラグ管理
   const [stubMode, setStubMode] = useState(true);
 
+  // APIで取得してきた都道府県を挿入
+  // 配列をpropsで渡しても元値を上書きできないのでuseState使う
+  // 都道府県idと都道府県名をOBJ化
+  const [prefectures, setPrefectures] = useState<Area[]>([]);
+
   // 全銘柄一覧 {name: string, id: number}
   const [allBrands, setAllBrands] = useState<BrandType[]>([]);
 
@@ -40,11 +47,13 @@ export const MainProvider: React.FC<PropsType> = (props: any) => {
   const value = {
     stubMode,
     setStubMode,
+    prefectures,
+    setPrefectures,
     allBrands,
     setAllBrands,
     rankings,
-    setRankings
-  }
+    setRankings,
+  };
 
   // valueの値が子コンポーネントで利用できる
   // ついでにルートに近い位置にルーターも入れておく
