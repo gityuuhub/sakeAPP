@@ -8,9 +8,11 @@ type PropsType = {
 // コメント表示コンポーネント
 export const BrandOneComment: React.FC<PropsType> = (props: PropsType) => {
   const { selectBrandId } = props;
-  const [comment, setComment] = useState('初期値');
+  const [comment, setComment] = useState('');
 
+  // selectBrandIdが変わるたびに、一言コメントを取得してcommentにセットする
   useEffect(() => {
+    console.log(selectBrandId);
     setComment(getOneComment(selectBrandId));
   }, [selectBrandId]);
 
