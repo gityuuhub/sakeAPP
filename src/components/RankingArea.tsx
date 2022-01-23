@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext,ReactNode } from 'react';
+import React, { useState, useEffect, useContext, ReactNode } from 'react';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { DataGrid } from '@material-ui/data-grid';
@@ -8,9 +8,7 @@ import { MainContext } from '../providers/mainProvider';
 import { DetailButton } from './DetailButton';
 
 export const RankingArea = () => {
-  const { stubMode } = useContext(MainContext);
-  // ランキング一覧
-  const [rankings, setRankings] = useState<{ [key: string]: number }[]>([]);
+  const { stubMode, rankings, setRankings } = useContext(MainContext);
 
   // 銘柄一覧
   const [brands, setBrands] = useState<string[]>([]);
@@ -46,8 +44,10 @@ export const RankingArea = () => {
       });
   }, []);
 
-  // TODO 無駄に一回実行されているので修正したい
+  // APIでよびだした値をcontextに入れた
   useEffect(() => {
+    // ランキング取得を一度もしていなかったら
+    if(rankings.length === 0 && brandsId.length > 0) {
     // ランキング一覧の取得
     fetch(getApiUrlRankings(stubMode), { mode: 'cors' })
       .then((response) => {
@@ -67,6 +67,7 @@ export const RankingArea = () => {
           if (brand) {
             item.name = brands[brand];
           }
+          // {"rank": number, "score": number, "brandId": number, "id": number, "name": string}
         });
         setRankings(data.overall);
         // console.log(data.overall);
@@ -78,6 +79,7 @@ export const RankingArea = () => {
         // );
         console.log('失敗しました');
       });
+    }
   }, [brandsId]);
 
   // ランキング表のカラム

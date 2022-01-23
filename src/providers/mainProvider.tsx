@@ -10,6 +10,8 @@ import { BrowserRouter } from 'react-router-dom';
 type mainContextType = {
   stubMode: boolean;
   setStubMode: React.Dispatch<React.SetStateAction<boolean>>;
+  rankings: { [key: string]: number }[];
+  setRankings: (param: { [key: string]: number }[]) => void;
 };
 
 type PropsType = {
@@ -26,12 +28,23 @@ export const MainProvider: React.FC<PropsType> = (props: any) => {
   // スタブモードのフラグ管理
   const [stubMode, setStubMode] = useState(true);
 
+  // ランキング一覧
+  const [rankings, setRankings] = useState<{ [key: string]: number }[]>([]);
+
+  // 数が多くなったのでvalueの値を変数にいれる
+  const value = {
+    stubMode,
+    setStubMode,
+    rankings,
+    setRankings
+  }
+
   // valueの値が子コンポーネントで利用できる
   // ついでにルートに近い位置にルーターも入れておく
   // グローバルスステートをページ単位で作って、ルーターで切り替えるなら、要書き換え
   return (
     <BrowserRouter>
-      <MainContext.Provider value={{ stubMode, setStubMode }}>{children}</MainContext.Provider>
+      <MainContext.Provider value={value}>{children}</MainContext.Provider>
     </BrowserRouter>
   );
 };
