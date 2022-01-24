@@ -7,7 +7,9 @@ type PropsType = {
 
 // API実行を待ってコメントをセットする
 async function callGetOneComment(selectBrandId, setComment) {
-  setComment(await getOneComment(selectBrandId));
+  const returnComment = await getOneComment(selectBrandId);
+  // 3項演算子：取得コメントが空なら適当なコメントを返す
+  setComment(returnComment !== '' ? returnComment : '飲んだことないからよく分かんない');
 }
 
 // コメント表示コンポーネント
