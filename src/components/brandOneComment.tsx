@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getOneComment } from '../function/getOneComment';
+import { getOneComment } from '../function/restApiOneComment';
 
 type PropsType = {
   selectBrandId: number;
@@ -12,7 +12,7 @@ export const BrandOneComment: React.FC<PropsType> = (props: PropsType) => {
 
   // selectBrandIdが変わるたびに、一言コメントを取得してcommentにセットする
   useEffect(() => {
-    console.log(selectBrandId);
+    console.log('selectBrandIDの変更を検知:' + selectBrandId);
     setComment(getOneComment(selectBrandId));
   }, [selectBrandId]);
 

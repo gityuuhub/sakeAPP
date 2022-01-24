@@ -25,11 +25,13 @@ const sakeOneCommnetUrl =
 
 // sakeOneCommnetをGetメソッドで実行して結果を返す
 const dosakeOneCommnetAPI = (selectBrandId: number) => {
-  console.log(selectBrandId);
+  console.log('コメントを取得するbrandId:' + selectBrandId);
 
   // クエリ作成と実行
-  axios.get(sakeOneCommnetUrl + '?brandId=' + selectBrandId).then(function (res) {
-    console.log(res.data);
+  //  axios.get(sakeOneCommnetUrl + '?brandId=' + selectBrandId).then(function (res) {
+  axios.get(sakeOneCommnetUrl, { params: { brandId: selectBrandId } }).then(function (res) {
+    console.log(res.data.comment);
+    return res.data.comment;
   });
 };
 
