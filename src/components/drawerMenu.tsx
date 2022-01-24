@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { Button, Drawer, FormGroup, FormControlLabel, Switch } from '@material-ui/core';
 import Box from '@mui/material/Box';
 import {
@@ -146,6 +147,18 @@ export const DrawerMenu: React.FC<PropsType> = (props: PropsType) => {
               labelPlacement="start"
             />
           </FormGroup>
+          <div>
+            <Link to="/onecomment">
+              <Button
+                style={{ width: '100%' }}
+                variant="contained"
+                color="secondary"
+                onClick={() => onClickTest()}
+              >
+                ワンコメ管理
+              </Button>
+            </Link>
+          </div>
         </Box>
       </Drawer>
     </Box>
