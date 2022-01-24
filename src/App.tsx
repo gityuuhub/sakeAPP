@@ -9,7 +9,9 @@ import { Menu } from './components/menu';
 import { Footer } from './components/footer';
 import { MainProvider } from './providers/mainProvider';
 
+import { TsukidashiContent } from './templates/tsukidashiContents';
 import { SakenowaContent } from './templates/sakenowaContents';
+import { HogehogeContent } from './templates/hogehogeContents';
 
 export const App: React.FC = () => {
   // 表示フラグをOBJでまとめた
@@ -48,9 +50,9 @@ export const App: React.FC = () => {
             />
           </Box>
         </Grid>
-        {/* initContentsは/で別パス切るかな */}
         <Grid item xs={8}>
           <Routes>
+            <Route path="/" element={<TsukidashiContent />}></Route>
             <Route
               path="/main"
               element={
@@ -61,8 +63,8 @@ export const App: React.FC = () => {
                 />
               }
             ></Route>
-            {/* DBメニュー */}
-            <Route path="/database" element={<h1>てすと</h1>}></Route>
+            {/* hogehogeメニュー */}
+            <Route path="/hogehoge" element={<HogehogeContent />}></Route>
           </Routes>
         </Grid>
         {/* フッター */}
