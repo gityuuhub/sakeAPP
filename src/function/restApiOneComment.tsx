@@ -5,8 +5,8 @@ DynamoDBにsakeOneCommnetテーブルがある。
     comment：（文字列型）brandIdの酒に対するコメント。
   DBリソースへのアクセスは、下記sakeOneCommnetのURL。
   RestFullなAPIを目指す。
-　メソッド
-　  Get：バラメータにbrandIdを指定することで登録されているコメントを返す。
+  メソッド
+    Get：バラメータにbrandIdを指定することで登録されているコメントを返す。
       こんな感じ：https://url?brandId=0
       ※レスポンスはAPI-GWの総合レスポンスで整形。
     Post：バラメータでbrandIdとcommentを指定した内容をDBに登録できる。
