@@ -95,9 +95,9 @@ export const Menu: React.FC<PropsType> = (props: PropsType) => {
         </Link>
         <br />
         <br />
-        <Link to="/database">
+        <Link to="/hogehoge">
           <Button style={{ width: '60%' }} variant="contained" color="primary">
-            DB登録
+            hoge
           </Button>
         </Link>
       </Box>
