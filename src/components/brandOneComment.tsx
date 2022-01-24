@@ -5,6 +5,13 @@ type PropsType = {
   selectBrandId: number;
 };
 
+// API実行を待ってコメントをセットする
+async function callGetOneComment(selectBrandId, setComment) {
+  const returnComment: string = await getOneComment(selectBrandId);
+  console.log('コメントは' + returnComment);
+  setComment(returnComment);
+}
+
 // コメント表示コンポーネント
 export const BrandOneComment: React.FC<PropsType> = (props: PropsType) => {
   const { selectBrandId } = props;
@@ -13,8 +20,8 @@ export const BrandOneComment: React.FC<PropsType> = (props: PropsType) => {
   // selectBrandIdが変わるたびに、一言コメントを取得してcommentにセットする
   useEffect(() => {
     console.log('selectBrandIDの変更を検知:' + selectBrandId);
-    // 戻り値が来る前にset関数が動いてるっぽい
-    setComment(getOneComment(selectBrandId));
+    // 戻り値が来る前にset関数が動いてるっぽいので関数切り出しで同期処理
+    callGetOneComment(selectBrandId, setComment);
   }, [selectBrandId]);
 
   return (
