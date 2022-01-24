@@ -20,21 +20,13 @@ type PropsType = {
 
 export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
   const { setNowStep } = props;
-  const { stubMode } = useContext(MainContext);
-
-  // APIで取得してきた都道府県を挿入
-  const [prefecture, setPrefecture] = useState<string[]>([]);
-  // APIで取得した都道府県のID。上記とまとめてOBJ化したい。
-  // 配列をpropsで渡しても元値を上書きできないのでuseState使う
-  const [prefectureId, setPrefectureId] = useState<number[]>([]);
+  const { stubMode, prefectures, setPrefectures, flavorTags, setFlavorTags } = useContext(MainContext);
 
   // 都道府県の選択フラグ
   const [prefectureSelectFlag, setPrefectureSelectFlag] = useState<boolean[]>([]);
 
-  // 蔵元一覧
-  const [breweries, setBreweries] = useState<string[]>([]);
-  // 蔵元一覧のID。上記とまとめてOBJ化したい
-  const [breweriesId, setBreweriesId] = useState<number[]>([]);
+  // 蔵元一覧 まとめてOBJ化
+  const [breweries, setBreweries] = useState<Brewery[]>([]);
   // 蔵元の選択フラグ
   const [breweriesSelectFlag, setBreweriesSelectFlag] = useState<boolean[]>([]);
 
@@ -52,8 +44,6 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
   const [selectBrandId, setSelectBrandId] = useState(0);
   // 選択した銘柄のフレーバータグ配列
   const [selectBrandFlavorTags, setSelectBrandFlavorTags] = useState<number[]>([]);
-  // apiから取得したフレーバータグ一覧  {"id": number, "tag": string}
-  const [flavorTags, setFlavorTags] = useState<{ [key: string]: string | number }[]>([]);
 
   // 銘柄詳細エリアの制御フラグ
   const [brandDetailShowFlag, setBrandDetailShowFlag] = useState(false);
@@ -63,40 +53,42 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
   const [brandsShowFlag, setBrandsShowFlag] = useState(false);
 
   useEffect(() => {
-    // 都道府県一覧の取得
-    fetch(getApiUrlAreas(stubMode), { mode: 'cors' })
-      .then((response) => {
-        return response.json();
-        // APIレスポンスはresponse.areas[n]{id:1, name:北海道}
-      })
-      .then((data) => {
-        // 配列の中身をループで回して取得
-        const arrayPre: Array<string> = [];
-        const arrayPreId: Array<number> = [];
-        const arrayPrefectureSelectFlag: Array<boolean> = [];
-        data.areas.map((areas: { [key: string]: any }) => {
-          arrayPre.push(areas.name);
-          arrayPreId.push(areas.id);
-          arrayPrefectureSelectFlag.push(false);
-          return 0;
+    // 都道府県を一度も取得していなかったら
+    if (prefectures.length === 0) {
+      // 都道府県一覧の取得
+      console.log('都道府県一覧取得する！！！');
+      fetch(getApiUrlAreas(stubMode), { mode: 'cors' })
+        .then((response) => {
+          return response.json();
+          // APIレスポンスはresponse.areas[n]{id:1, name:北海道}
+        })
+        .then((data) => {
+          // 配列の中身をループで回して取得
+          const array: Array<Area> = [];
+          const arrayPrefectureSelectFlag: Array<boolean> = [];
+          data.areas.map((area: Area) => {
+            array.push(area);
+            arrayPrefectureSelectFlag.push(false);
+            return 0;
+          });
+          // API実行結果をpropsに格納
+          setPrefectures(array);
+          setPrefectureSelectFlag(arrayPrefectureSelectFlag);
+          // console.log('都道府県一覧を取得');
+          // console.log(arrayPre);
+        })
+        .catch((error) => {
+          console.log(error);
+          // alert(
+          //   'API実行時はCORS問題を解決すること。 --disable-web-security --user-data-dir="ディレクトリ"',
+          // );
+          console.log('失敗しました');
         });
-        // API実行結果をpropsに格納
-        setPrefecture(arrayPre);
-        setPrefectureId(arrayPreId);
-        setPrefectureSelectFlag(arrayPrefectureSelectFlag);
-        // console.log('都道府県一覧を取得');
-        // console.log(arrayPre);
-      })
-      .catch((error) => {
-        console.log(error);
-        // alert(
-        //   'API実行時はCORS問題を解決すること。 --disable-web-security --user-data-dir="ディレクトリ"',
-        // );
-        console.log('失敗しました');
-      });
+    }
 
+    // フレーバータグ一覧を一度も取得していなかったら
+    if (flavorTags.length === 0) {
     // フレーバータグ一覧の取得
-    // 初回レンダリングの際にapi呼び出ししてflavorTagsにセット
     fetch(getApiUrlFlavorTags(stubMode), { mode: 'cors' })
       .then((response) => {
         return response.json();
@@ -113,6 +105,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
         alert('flavor-tagsでAPI実行時に失敗');
         console.log('失敗しました');
       });
+    }
   }, []);
 
   // 産地選択後に銘柄を取得する
@@ -141,26 +134,20 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
         // APIレスポンスはresponse.breweries[n]{id:1, name:蔵元, areaId:地域一覧のID}
       })
       .then((data) => {
-        // ToDo API実行を1回だけにしたい。
-        // 実行有無フラグをグローバルに持たせて、OBJはディープコピーすること。
-        // 一度OBJをJSON形式に戻して再代入するとスムーズ。
         // 配列の中身をループで回して取得
         // 選択された産地の蔵元だけを抽出
-        const arrayName: Array<string> = [];
-        const arrayNameId: Array<number> = [];
+        const array: Array<Brewery> = [];
         const arrayNameSelectFlag: Array<boolean> = [];
-        data.breweries.map((bre: { [key: string]: any }) => {
+        data.breweries.map((bre: Brewery) => {
           // 地域が一致かつ蔵元名が空以外を抽出
-          if (bre.areaId === prefectureId[index] && bre.name !== '') {
-            arrayName.push(bre.name);
-            arrayNameId.push(bre.id);
+          if (bre.areaId === prefectures[index].id && bre.name !== '') {
+            array.push(bre);
             arrayNameSelectFlag.push(false);
           }
           return 0;
         });
         // API実行結果をbreweriesに格納
-        setBreweries(arrayName);
-        setBreweriesId(arrayNameId);
+        setBreweries(array);
         setBreweriesSelectFlag(arrayNameSelectFlag);
       })
       .catch((error) => {
@@ -198,9 +185,9 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
         const arrayName: Array<string> = [];
         const arrayNameId: Array<number> = [];
         const arrayNameSelectFlag: Array<boolean> = [];
-        data.brands.map((bra: { [key: string]: any }) => {
+        data.brands.map((bra: BrandType) => {
           // 蔵元が一致かつ銘柄が空以外を抽出
-          if (bra.breweryId === breweriesId[index] && bra.name !== '') {
+          if (bra.breweryId === breweries[index].id && bra.name !== '') {
             arrayName.push(bra.name);
             arrayNameId.push(bra.id);
             arrayNameSelectFlag.push(false);
@@ -261,7 +248,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
 
         // 配列の中身をループで回して取得
         // 選択された銘柄のフレーバーだけを抽出
-        data.flavorCharts.map((fla: { [key: string]: any }) => {
+        data.flavorCharts.map((fla: { [key: string]: number }) => {
           // 銘柄が一致するものを抽出
           if (fla.brandId === brandsId[index]) {
             setBrandDetailRadar([
@@ -296,7 +283,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
           // タグのリストをリセット
           setSelectBrandFlavorTags([]);
 
-          data.flavorTags.forEach((fla: { [key: string]: any }) => {
+          data.flavorTags.forEach((fla: BrandFlavorTag) => {
             // 銘柄が一致するものを抽出
             if (fla.brandId === brandsId[index]) {
               setSelectBrandFlavorTags(fla.tagIds);
@@ -319,7 +306,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
         <Box component="span" m={1}>
           <div>
             <h3>都道府県から探す</h3>
-            {prefecture.map((pre, index) => {
+            {prefectures.map((pre, index) => {
               return (
                 <Button
                   key={index} // key変更
@@ -328,7 +315,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
                   style={{ width: 100 }}
                   onClick={() => onClickBreweriesGet(index)}
                 >
-                  {pre}
+                  {pre.name}
                 </Button>
               );
             })}
@@ -345,7 +332,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
                   disabled={breweriesSelectFlag[index]}
                   onClick={() => onClickBrandsGet(index)}
                 >
-                  {bre}
+                  {bre.name}
                 </Button>
               );
             })}
@@ -373,7 +360,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
             <h3>銘柄詳細</h3>
             <BrandDetail
               brandDetailRadar={brandDetailRadar}
-              selectBrandFlavorTags={selectBrandFlavorTags}
+              selectBrandId={selectBrandId}
               flavorTags={flavorTags}
             ></BrandDetail>
           </div>

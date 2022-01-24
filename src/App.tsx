@@ -6,13 +6,10 @@ import Grid from '@mui/material/Grid';
 
 import { Header } from './components/header';
 import { Menu } from './components/menu';
-import { StepBar } from './components/stepBar';
-import { InitContents } from './components/initContents';
 import { Footer } from './components/footer';
-import { SelectArea } from './components/SelectArea';
-import { RankingArea } from './components/RankingArea';
-import { SelectFlavor } from './components/SelectFlavor';
 import { MainProvider } from './providers/mainProvider';
+
+import { SakenowaContent } from './templates/sakenowaContents';
 
 export const App: React.FC = () => {
   // 表示フラグをOBJでまとめた
@@ -51,40 +48,23 @@ export const App: React.FC = () => {
             />
           </Box>
         </Grid>
-        {/* ステップバーとコンテンツを別ファイルにまとめてページ化したい */}
         {/* initContentsは/で別パス切るかな */}
-        {/* ステップバー */}
-        <Routes>
-          <Route
-            path="/main"
-            element={
-              <Grid item xs={8}>
-                <Box
-                  component="span"
-                  m={1}
-                  style={{ display: contentsShowFlag.stepBar ? '' : 'none' }}
-                >
-                  <StepBar nowStep={nowStep} />
-                </Box>
-                {/* コンテンツ配置 */}
-                <Box
-                  component="span"
-                  m={1}
-                  style={{ display: contentsShowFlag.init ? '' : 'none' }}
-                >
-                  <div>
-                    <InitContents />
-                  </div>
-                </Box>
-                {contentsShowFlag.areas && <SelectArea setNowStep={setNowStep} />}
-                {contentsShowFlag.selectFlavor && <SelectFlavor setNowStep={setNowStep} />}
-                {contentsShowFlag.ranking && <RankingArea />}
-              </Grid>
-            }
-          ></Route>
-          {/* DBメニュー */}
-          <Route path="/database" element={<h1>てすと</h1>}></Route>
-        </Routes>
+        <Grid item xs={8}>
+          <Routes>
+            <Route
+              path="/main"
+              element={
+                <SakenowaContent
+                  contentsShowFlag={contentsShowFlag}
+                  setNowStep={setNowStep}
+                  nowStep={nowStep}
+                />
+              }
+            ></Route>
+            {/* DBメニュー */}
+            <Route path="/database" element={<h1>てすと</h1>}></Route>
+          </Routes>
+        </Grid>
         {/* フッター */}
         <Grid item xs={12}>
           <Box component="span" m={5}>
