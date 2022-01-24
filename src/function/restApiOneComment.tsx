@@ -17,9 +17,6 @@
 
 import axios from 'axios';
 
-// 残タスク1：dosakeOneCommnetAPIまでselectBrandIdが上手くわたってこない。
-//　　　単純ミス？useStateの値はタイムラグがある？？
-// 残タスク2：dosakeOneCommnetAPIで返り値が上手く扱えない。GWのマッピング書き直す？
 const sakeOneCommnetUrl =
   'https://2ygmpjbho2.execute-api.ap-northeast-1.amazonaws.com/dynamoAPI/sakeonecomment';
 
@@ -28,9 +25,9 @@ const dosakeOneCommnetAPI = (selectBrandId: number) => {
   console.log('コメントを取得するbrandId:' + selectBrandId);
 
   // クエリ作成と実行
-  //  axios.get(sakeOneCommnetUrl + '?brandId=' + selectBrandId).then(function (res) {
+  //  axiosっぽく書いてみた
   axios.get(sakeOneCommnetUrl, { params: { brandId: selectBrandId } }).then(function (res) {
-    console.log(res.data.comment);
+    console.log(res.data);
     return res.data.comment;
   });
 };
@@ -41,9 +38,8 @@ type PropsTypeGet = {
 
 // 引数のbrand（酒）に応じた一言コメントを返す
 export const getOneComment = (props: PropsTypeGet) => {
-  const { selectBrandId } = props;
+  const selectBrandId = props;
   // APIを実行してBrandIdに応じたコメントを返す
-  // selectBrandIdにうまく値が入らない
   return dosakeOneCommnetAPI(selectBrandId);
 };
 

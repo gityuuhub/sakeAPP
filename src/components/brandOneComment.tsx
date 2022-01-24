@@ -13,6 +13,7 @@ export const BrandOneComment: React.FC<PropsType> = (props: PropsType) => {
   // selectBrandIdが変わるたびに、一言コメントを取得してcommentにセットする
   useEffect(() => {
     console.log('selectBrandIDの変更を検知:' + selectBrandId);
+    // 戻り値が来る前にset関数が動いてるっぽい
     setComment(getOneComment(selectBrandId));
   }, [selectBrandId]);
 
