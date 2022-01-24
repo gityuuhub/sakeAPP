@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import Button from '@mui/material/Button';
 import { GridRowId } from '@material-ui/data-grid';
 
@@ -33,7 +33,11 @@ export const DetailButton: React.FC<PropsType> = (props: PropsType) => {
     selectBrandName = item.name;
   }
 
-  useEffect(() => {
+  // useEffect(() => {
+  //
+  // }, [selectBrandId]);
+
+  const handleOpen = () => {
     // フレーバー情報をリセット
     setBrandDetailRadar([
       { flavor: '華やか', value: 0 },
@@ -49,10 +53,6 @@ export const DetailButton: React.FC<PropsType> = (props: PropsType) => {
         return response.json();
       })
       .then((data) => {
-        // ToDo API実行を1回だけにしたい。
-        // 実行有無フラグをグローバルに持たせて、OBJはディープコピーすること。
-        // 一度OBJをJSON形式に戻して再代入するとスムーズ。
-
         // 配列の中身をループで回して取得
         // 選択された銘柄のフレーバーだけを抽出
         data.flavorCharts.map((fla: { [key: string]: number }) => {
@@ -77,9 +77,6 @@ export const DetailButton: React.FC<PropsType> = (props: PropsType) => {
         // alert('API実行時はCORS問題を解決すること。');
         console.log('失敗しました');
       });
-  }, [selectBrandId]);
-
-  const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
