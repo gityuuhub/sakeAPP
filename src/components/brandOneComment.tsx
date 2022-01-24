@@ -6,7 +6,10 @@ type PropsType = {
 };
 
 // API実行を待ってコメントをセットする
-async function callGetOneComment(selectBrandId, setComment) {
+async function callGetOneComment(
+  selectBrandId: number,
+  setComment: React.Dispatch<React.SetStateAction<string>>,
+) {
   const returnComment = await getOneComment(selectBrandId);
   // 3項演算子：取得コメントが空なら適当なコメントを返す
   setComment(returnComment !== '' ? returnComment : '飲んだことないからよく分かんない');
@@ -15,7 +18,7 @@ async function callGetOneComment(selectBrandId, setComment) {
 // コメント表示コンポーネント
 export const BrandOneComment: React.FC<PropsType> = (props: PropsType) => {
   const { selectBrandId } = props;
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState<string>('');
 
   // selectBrandIdが変わるたびに、一言コメントを取得してcommentにセットする
   useEffect(() => {
