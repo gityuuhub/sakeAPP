@@ -12,6 +12,7 @@ import { MainProvider } from './providers/mainProvider';
 import { TsukidashiContent } from './templates/tsukidashiContents';
 import { SakenowaContent } from './templates/sakenowaContents';
 import { HogehogeContent } from './templates/hogehogeContents';
+import { OneCommentAdmin } from './templates/oneCommentAdmin';
 
 export const App: React.FC = () => {
   // 表示フラグをOBJでまとめた
@@ -65,6 +66,8 @@ export const App: React.FC = () => {
             ></Route>
             {/* hogehogeメニュー */}
             <Route path="/hogehoge" element={<HogehogeContent />}></Route>
+            {/* 管理者メニュー */}
+            <Route path="/onecomment" element={<OneCommentAdmin />}></Route>
           </Routes>
         </Grid>
         {/* フッター */}
