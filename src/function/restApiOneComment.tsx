@@ -13,7 +13,7 @@ DynamoDBにsakeOneCommnetテーブルがある。
     Post：バラメータでbrandIdとcommentを指定した内容をDBに登録できる。
       ※パーテションキーが重複したら上書きされるっぽい。RDSと勝手が違う。
       こんな感じ：https://url
-      body{"brandId":0,"comment":"レモンサワーからの梅酒（売り切れ直前）", "starPoint":5}
+      params:{"brandId":0,"comment":"レモンサワーからの梅酒（売り切れ直前）", "starPoint":5}
 ノーガードなので変なアクセス受けると店じまい予定。
 */
 import axios from 'axios';

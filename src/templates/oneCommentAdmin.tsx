@@ -15,8 +15,7 @@ const sakeOneCommnetUrl =
 const onClickSendComment = (brandId: number, comment: string, starPoint: number) => {
   axios.post(
     sakeOneCommnetUrl,
-    // 多分set関数の型指定してないせいで数値が文字列になっているので、間に合わせ型変換
-    { params: { brandId: Number(brandId), comment: comment, starPoint: Number(starPoint) } },
+    { params: { brandId: brandId, comment: comment, starPoint: starPoint } },
     { headers: { 'content-type': 'application/json' } },
   );
 };
@@ -26,14 +25,11 @@ export const OneCommentAdmin = () => {
   const [comment, setComment] = useState('');
   const [starPoint, setStarPoint] = useState(0);
 
-  const bChange = (e) => {
-    setBrandId(() => e.target.value);
+  const bChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBrandId(() => Number(e.target.value));
   };
-  const cChange = (e) => {
+  const cChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setComment(() => e.target.value);
-  };
-  const sChange = (e) => {
-    setStarPoint(() => e.target.value);
   };
 
   return (
@@ -43,6 +39,7 @@ export const OneCommentAdmin = () => {
       <TextField
         id="brandId"
         value={brandId}
+        type="number"
         label="brandId"
         variant="outlined"
         onChange={bChange}
@@ -56,7 +53,13 @@ export const OneCommentAdmin = () => {
         onChange={cChange}
       />
       <Typography component="legend">★starPointSystem by R★</Typography>
-      <Rating name="starbyR" value={starPoint} onChange={sChange} />
+      <Rating
+        name="starbyR"
+        value={starPoint}
+        onChange={(event, newValue) => {
+          setStarPoint(Number(newValue));
+        }}
+      />
       <br />
       <Button
         variant="contained"
