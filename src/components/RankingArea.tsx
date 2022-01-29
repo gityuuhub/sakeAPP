@@ -2,7 +2,8 @@ import React, { useEffect, useContext } from 'react';
 import Grid from '@mui/material/Grid';
 import { DataGrid, GridCellParams } from '@material-ui/data-grid';
 
-import { getApiUrlRankings, getApiUrlBrands, getApiUrlFlavorTags } from '../function/getApiUrl';
+import { getApiUrlRankings, getApiUrlFlavorTags } from '../function/getApiUrl';
+import { getAllBrand } from '../function/getAllBrand';
 import { MainContext } from '../providers/mainProvider';
 import { DetailButton } from './DetailButton';
 
@@ -11,33 +12,17 @@ export const RankingArea: React.FC = () => {
     useContext(MainContext);
 
   useEffect(() => {
-    // 全銘柄一覧取得を一度もしていなかったら
-    if (allBrands.length === 0) {
-      // 全銘柄一覧の取得
-      console.log('銘柄一覧の取得する！！！');
-      fetch(getApiUrlBrands(stubMode), { mode: 'cors' })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          const array: Array<Brand> = [];
-          data.brands.map((bra: Brand) => {
-            // 銘柄が空以外を抽出
-            if (bra.name !== '') {
-              // 銘柄名と銘柄idと蔵元idを1つのOBJ化
-              // {name: bra.name, id: bra.id, breweryId: bra.breweryId}
-              array.push(bra);
-            }
-          });
-          // API実行結果をallBrandsに格納
-          setAllBrands(array);
-        })
-        .catch((error) => {
-          console.log(error);
-          // alert('API実行時はCORS問題を解決すること。');
-          console.log('失敗しました');
-        });
+    // 直接、await getAllBrand(stubMode)は呼べない
+    // useEffectはpromiseを返さない（useEffectに渡す関数の戻り値はcleanup）
+    const getData = async() => {
+      // 全銘柄一覧取得を一度もしていなかったら
+      if (allBrands.length === 0) {
+        const array = await getAllBrand(stubMode);
+        setAllBrands(array);
+      }
     }
+    getData();
+
     // フレーバータグ一覧を一度も取得していなかったら
     if (flavorTags.length === 0) {
       // フレーバータグ一覧の取得
