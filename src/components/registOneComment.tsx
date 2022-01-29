@@ -3,21 +3,12 @@ import React, { useState } from 'react';
 import { TextField, Typography, Rating } from '@mui/material';
 import { Button } from '@material-ui/core';
 
-import axios from 'axios';
+import { postOneComment } from '../function/restApiOneComment';
 
-// とりあえず何も考えずにやっつけでPOSTでデータ飛ばしてみた
-// 要リファクタリング
-// API呼び出しはfunctionに切り出し
-// 画面コンポーネント要素はcomponentsに切り出し
-const sakeOneCommnetUrl =
-  'https://2ygmpjbho2.execute-api.ap-northeast-1.amazonaws.com/dynamoAPI/sakeonecomment';
-
+// パラメータをOBJに詰めてfunctionにAPI実行をお任せ。
 const onClickSendComment = (brandId: number, comment: string, starPoint: number) => {
-  axios.post(
-    sakeOneCommnetUrl,
-    { params: { brandId: brandId, comment: comment, starPoint: starPoint } },
-    { headers: { 'content-type': 'application/json' } },
-  );
+  const params = { brandId: brandId, comment: comment, starPoint: starPoint };
+  postOneComment(params);
 };
 
 export const RegistOneComment = () => {
@@ -25,6 +16,9 @@ export const RegistOneComment = () => {
   const [brandId, setBrandId] = useState(1);
   const [comment, setComment] = useState('');
   const [starPoint, setStarPoint] = useState(0);
+
+  // （仮）データ登録結果を格納するuseState（useRef使ってみたい）
+  //    const [registerResult setRegisterResult] = useState(0);
 
   return (
     <>
