@@ -43,7 +43,7 @@ const getBrandName = (stubMode: boolean, brandId: number): Promise<string> => {
         return response.json();
       })
       .then((data) => {
-        data.brands.map((bra: BrandType) => {
+        data.brands.map((bra: Brand) => {
           // 蔵元が一致かつ銘柄が空以外を抽出
           if (bra.id === brandId) {
             // API実行後にidと一致するnameを返却

@@ -19,8 +19,8 @@ export const RankingArea: React.FC = () => {
           return response.json();
         })
         .then((data) => {
-          const array: Array<BrandType> = [];
-          data.brands.map((bra: BrandType) => {
+          const array: Array<Brand> = [];
+          data.brands.map((bra: Brand) => {
             // 銘柄が空以外を抽出
             if (bra.name !== '') {
               // 銘柄名と銘柄idと蔵元idを1つのOBJ化

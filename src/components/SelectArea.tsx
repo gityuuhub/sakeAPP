@@ -12,6 +12,9 @@ import {
   getApiUrlFlavorTags,
   getApiUrlBrandFlavorTags,
 } from '../function/getApiUrl';
+import {
+  getAllBrand
+} from '../function/getAllBrand';
 import { MainContext } from '../providers/mainProvider';
 
 type PropsType = {
@@ -20,22 +23,37 @@ type PropsType = {
 
 export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
   const { setNowStep } = props;
-  const { stubMode, prefectures, setPrefectures, flavorTags, setFlavorTags } = useContext(MainContext);
+  const {
+    stubMode,
+    prefectures,
+    setPrefectures,
+    flavorTags,
+    setFlavorTags,
+    breweries,
+    setBreweries,
+    allBrands,
+    setAllBrands
+  } = useContext(MainContext);
 
+  /*******************
+    選択状態フラグ
+  ********************/
   // 都道府県の選択フラグ
   const [prefectureSelectFlag, setPrefectureSelectFlag] = useState<boolean[]>([]);
-
-  // 蔵元一覧 まとめてOBJ化
-  const [breweries, setBreweries] = useState<Brewery[]>([]);
   // 蔵元の選択フラグ
   const [breweriesSelectFlag, setBreweriesSelectFlag] = useState<boolean[]>([]);
-
-  // 銘柄一覧
-  const [brands, setBrands] = useState<string[]>([]);
-  // 銘柄一覧のID。上記とまとめてOBJ化したい
-  const [brandsId, setBrandsId] = useState<number[]>([]);
   // 銘柄の選択フラグ
   const [brandsSelectFlag, setbrandsSelectFlag] = useState<boolean[]>([]);
+
+  /*******************
+    表示用データ
+  ********************/
+  // 選択した蔵元の銘柄一覧
+  // const [brands, setBrands] = useState<string[]>([]);
+  // // 銘柄一覧のID。上記とまとめてOBJ化したい
+  // const [brandsId, setBrandsId] = useState<number[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
+
   // 選択銘柄のフレーバーデータ
   const [brandDetailRadar, setBrandDetailRadar] = useState<{ [key: string]: string | number }[]>(
     [],
@@ -45,6 +63,9 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
   // 選択した銘柄のフレーバータグ配列
   const [selectBrandFlavorTags, setSelectBrandFlavorTags] = useState<number[]>([]);
 
+  /*******************
+    表示制御フラグ
+  ********************/
   // 銘柄詳細エリアの制御フラグ
   const [brandDetailShowFlag, setBrandDetailShowFlag] = useState(false);
   // 蔵元エリアの表示フラグ
@@ -128,6 +149,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
     setPrefectureSelectFlag(arrayFlag);
 
     // 蔵元一覧を取得
+    if (breweries.length === 0) {
     fetch(getApiUrlBreweries(stubMode), { mode: 'cors' })
       .then((response) => {
         return response.json();
@@ -155,9 +177,10 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
         // alert('API実行時はCORS問題を解決すること。');
         console.log('失敗しました');
       });
+    }
   };
-  // 銘柄一覧を取得
-  const onClickBrandsGet = (index: number) => {
+  // 選択した蔵元の銘柄一覧を取得
+  const onClickBrandsGet = async (index: number) => {
     // ステップバーの表示を更新
     setNowStep(2);
     // コンテンツエリアの表示制御をリセット
@@ -172,40 +195,66 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
     arrayFlag[index] = true;
     setBreweriesSelectFlag(arrayFlag);
 
-    fetch(getApiUrlBrands(stubMode), { mode: 'cors' })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        // ToDo API実行を1回だけにしたい。
-        // 実行有無フラグをグローバルに持たせて、OBJはディープコピーすること。
-        // 一度OBJをJSON形式に戻して再代入するとスムーズ。
-        // 配列の中身をループで回して取得
-        // 選択された産地の蔵元だけを抽出
-        const arrayName: Array<string> = [];
-        const arrayNameId: Array<number> = [];
-        const arrayNameSelectFlag: Array<boolean> = [];
-        data.brands.map((bra: BrandType) => {
-          // 蔵元が一致かつ銘柄が空以外を抽出
-          if (bra.breweryId === breweries[index].id && bra.name !== '') {
-            arrayName.push(bra.name);
-            arrayNameId.push(bra.id);
-            arrayNameSelectFlag.push(false);
-          }
-          return 0;
-        });
-        // API実行結果をbreweriesに格納
-        setBrands(arrayName); // 選択した蔵元の銘柄name配列
-        // console.log(arrayName);
-        setBrandsId(arrayNameId); // 選択した蔵元の銘柄id配列
-        // console.log(arrayNameId);
-        setbrandsSelectFlag(arrayNameSelectFlag);
-      })
-      .catch((error) => {
-        console.log(error);
-        // alert('API実行時はCORS問題を解決すること。');
-        console.log('失敗しました');
+    // 全銘柄一覧を取得
+    if (allBrands.length === 0) {
+      // 全銘柄一覧の取得
+      console.log('銘柄一覧の取得する！！！');
+      const array = await getAllBrand(stubMode);
+
+      // API実行結果をallBrandsに格納
+      setAllBrands(array);
+      console.log(array);
+
+      const arrayBrand: Array<Brand> = [];
+          const arrayNameSelectFlag: Array<boolean> = [];
+          array.map((bra: Brand) => {
+            // 蔵元が一致かつ銘柄が空以外を抽出
+            if (bra.breweryId === breweries[index].id && bra.name !== '') {
+              arrayBrand.push(bra);
+              arrayNameSelectFlag.push(false);
+            }
+            return 0;
+          });
+          // API実行結果をbrandsに格納
+          setBrands(arrayBrand);
+          setbrandsSelectFlag(arrayNameSelectFlag);
+    } else {
+      // 全銘柄を取得済みであれば抽出処理のみ
+      const arrayBrand = allBrands.filter((bra) => {
+        return bra.breweryId === breweries[index].id && bra.name !== ''
       });
+      setBrands(arrayBrand);
+    }
+    // fetch(getApiUrlBrands(stubMode), { mode: 'cors' })
+    //   .then((response) => {
+    //     return response.json();
+    //   })
+    //   .then((data) => {
+    //     // ToDo API実行を1回だけにしたい。
+    //     // 実行有無フラグをグローバルに持たせて、OBJはディープコピーすること。
+    //     // 一度OBJをJSON形式に戻して再代入するとスムーズ。
+    //     // 配列の中身をループで回して取得
+    //     // 選択された産地の蔵元だけを抽出
+    //     const array: Array<Brand> = [];
+    //     const arrayNameSelectFlag: Array<boolean> = [];
+    //     data.brands.map((bra: Brand) => {
+    //       // 蔵元が一致かつ銘柄が空以外を抽出
+    //       if (bra.breweryId === breweries[index].id && bra.name !== '') {
+    //         array.push(bra);
+    //         arrayNameSelectFlag.push(false);
+    //       }
+    //       return 0;
+    //     });
+    //     // API実行結果をbrandsに格納
+    //     setBrands(array);
+    //     setbrandsSelectFlag(arrayNameSelectFlag);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     // alert('API実行時はCORS問題を解決すること。');
+    //     console.log('失敗しました');
+    //   });
+
   };
 
   // 銘柄フレーバー取得
@@ -241,16 +290,16 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
         // 実行有無フラグをグローバルに持たせて、OBJはディープコピーすること。
         // 一度OBJをJSON形式に戻して再代入するとスムーズ。
 
-        console.log('選択した銘柄id' + brandsId[index]);
+        console.log('選択した銘柄id' + brands[index].id);
         // 選択した銘柄のidを状態として持つように変更
-        setSelectBrandId(brandsId[index]);
+        setSelectBrandId(brands[index].id);
         console.log('選択した銘柄idをセットした' + selectBrandId);
 
         // 配列の中身をループで回して取得
         // 選択された銘柄のフレーバーだけを抽出
         data.flavorCharts.map((fla: { [key: string]: number }) => {
           // 銘柄が一致するものを抽出
-          if (fla.brandId === brandsId[index]) {
+          if (fla.brandId === brands[index].id) {
             setBrandDetailRadar([
               // valueだけの代入に書き直したい
               { flavor: '華やか', value: fla.f1 },
@@ -271,7 +320,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
         console.log('失敗しました');
       });
 
-    if (brandsId[index] != selectBrandId) {
+    if (brands[index].id != selectBrandId) {
       // 銘柄フレーバータグ一覧の取得
       fetch(getApiUrlBrandFlavorTags(stubMode), { mode: 'cors' })
         .then((response) => {
@@ -285,7 +334,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
 
           data.flavorTags.forEach((fla: BrandFlavorTag) => {
             // 銘柄が一致するものを抽出
-            if (fla.brandId === brandsId[index]) {
+            if (fla.brandId === brands[index].id) {
               setSelectBrandFlavorTags(fla.tagIds);
               console.log('selectBrandFlavorTags' + selectBrandFlavorTags);
               // 1回処理したらmapをBreakしたい
@@ -349,7 +398,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
                   disabled={brandsSelectFlag[index]}
                   onClick={() => onClickflavorGet(index)}
                 >
-                  {bra}
+                  {bra.name}
                 </Button>
               );
             })}
