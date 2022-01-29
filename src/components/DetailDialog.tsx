@@ -18,9 +18,14 @@ export const DetailDialog: React.FC<PropsType> = (props: PropsType) => {
 
   return (
     <>
-      <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open} sx={{width: '600px'}}>
-        <DialogTitle sx={{ m: 0, p: 2 , display: 'flex'}}>
-          <Box sx={{ textAlign: 'center'}}>{title}</Box>
+      <Dialog
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={open}
+        sx={{ width: '600px' }}
+      >
+        <DialogTitle sx={{ m: 0, p: 2, display: 'flex' }}>
+          <Box sx={{ textAlign: 'center' }}>{title}</Box>
           <div style={{ flexGrow: 1 }}></div>
           {handleClose ? (
             <IconButton

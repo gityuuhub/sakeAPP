@@ -14,8 +14,10 @@ type mainContextType = {
   setPrefectures: (param: Area[]) => void;
   flavorTags: FlavorTag[];
   setFlavorTags: (param: FlavorTag[]) => void;
-  allBrands: BrandType[];
-  setAllBrands: (param: BrandType[]) => void;
+  breweries: Brewery[];
+  setBreweries: (param: Brewery[]) => void;
+  allBrands: Brand[];
+  setAllBrands: (param: Brand[]) => void;
   rankings: Ranking[];
   setRankings: (param: Ranking[]) => void;
 };
@@ -42,8 +44,11 @@ export const MainProvider: React.FC<PropsType> = (props: PropsType) => {
   // フレーバータグ一覧  {"id": number, "tag": string}
   const [flavorTags, setFlavorTags] = useState<FlavorTag[]>([]);
 
+  // 蔵元一覧 まとめてOBJ化
+  const [breweries, setBreweries] = useState<Brewery[]>([]);
+
   // 全銘柄一覧 {name: string, id: number}
-  const [allBrands, setAllBrands] = useState<BrandType[]>([]);
+  const [allBrands, setAllBrands] = useState<Brand[]>([]);
 
   // ランキング一覧
   const [rankings, setRankings] = useState<Ranking[]>([]);
@@ -56,6 +61,8 @@ export const MainProvider: React.FC<PropsType> = (props: PropsType) => {
     setPrefectures,
     flavorTags,
     setFlavorTags,
+    breweries,
+    setBreweries,
     allBrands,
     setAllBrands,
     rankings,
