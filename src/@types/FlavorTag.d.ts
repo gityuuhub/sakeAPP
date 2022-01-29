@@ -1,5 +1,4 @@
-
 type FlavorTag = {
-  id: number
-  tag: string
-}
+  id: number;
+  tag: string;
+};

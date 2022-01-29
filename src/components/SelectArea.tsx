@@ -6,15 +6,12 @@ import Grid from '@mui/material/Grid';
 import { BrandDetail } from './brandDetail';
 import {
   getApiUrlAreas,
-  getApiUrlBrands,
   getApiUrlBreweries,
   getApiUrlFlavorCharts,
   getApiUrlFlavorTags,
   getApiUrlBrandFlavorTags,
 } from '../function/getApiUrl';
-import {
-  getAllBrand
-} from '../function/getAllBrand';
+import { getAllBrand } from '../function/getAllBrand';
 import { MainContext } from '../providers/mainProvider';
 
 type PropsType = {
@@ -32,7 +29,7 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
     breweries,
     setBreweries,
     allBrands,
-    setAllBrands
+    setAllBrands,
   } = useContext(MainContext);
 
   /*******************
@@ -109,23 +106,23 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
 
     // フレーバータグ一覧を一度も取得していなかったら
     if (flavorTags.length === 0) {
-    // フレーバータグ一覧の取得
-    fetch(getApiUrlFlavorTags(stubMode), { mode: 'cors' })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        // console.log('flavor-tags(フレーバータグ一覧):');
-        // console.log(data);
-        // console.log('フレーバータグ一覧取り出す');
-        // console.log(data.tags);
-        setFlavorTags(data.tags);
-      })
-      .catch((error) => {
-        console.log(error);
-        alert('flavor-tagsでAPI実行時に失敗');
-        console.log('失敗しました');
-      });
+      // フレーバータグ一覧の取得
+      fetch(getApiUrlFlavorTags(stubMode), { mode: 'cors' })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          // console.log('flavor-tags(フレーバータグ一覧):');
+          // console.log(data);
+          // console.log('フレーバータグ一覧取り出す');
+          // console.log(data.tags);
+          setFlavorTags(data.tags);
+        })
+        .catch((error) => {
+          console.log(error);
+          alert('flavor-tagsでAPI実行時に失敗');
+          console.log('失敗しました');
+        });
     }
   }, []);
 
@@ -150,33 +147,33 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
 
     // 蔵元一覧を取得
     if (breweries.length === 0) {
-    fetch(getApiUrlBreweries(stubMode), { mode: 'cors' })
-      .then((response) => {
-        return response.json();
-        // APIレスポンスはresponse.breweries[n]{id:1, name:蔵元, areaId:地域一覧のID}
-      })
-      .then((data) => {
-        // 配列の中身をループで回して取得
-        // 選択された産地の蔵元だけを抽出
-        const array: Array<Brewery> = [];
-        const arrayNameSelectFlag: Array<boolean> = [];
-        data.breweries.map((bre: Brewery) => {
-          // 地域が一致かつ蔵元名が空以外を抽出
-          if (bre.areaId === prefectures[index].id && bre.name !== '') {
-            array.push(bre);
-            arrayNameSelectFlag.push(false);
-          }
-          return 0;
+      fetch(getApiUrlBreweries(stubMode), { mode: 'cors' })
+        .then((response) => {
+          return response.json();
+          // APIレスポンスはresponse.breweries[n]{id:1, name:蔵元, areaId:地域一覧のID}
+        })
+        .then((data) => {
+          // 配列の中身をループで回して取得
+          // 選択された産地の蔵元だけを抽出
+          const array: Array<Brewery> = [];
+          const arrayNameSelectFlag: Array<boolean> = [];
+          data.breweries.map((bre: Brewery) => {
+            // 地域が一致かつ蔵元名が空以外を抽出
+            if (bre.areaId === prefectures[index].id && bre.name !== '') {
+              array.push(bre);
+              arrayNameSelectFlag.push(false);
+            }
+            return 0;
+          });
+          // API実行結果をbreweriesに格納
+          setBreweries(array);
+          setBreweriesSelectFlag(arrayNameSelectFlag);
+        })
+        .catch((error) => {
+          console.log(error);
+          // alert('API実行時はCORS問題を解決すること。');
+          console.log('失敗しました');
         });
-        // API実行結果をbreweriesに格納
-        setBreweries(array);
-        setBreweriesSelectFlag(arrayNameSelectFlag);
-      })
-      .catch((error) => {
-        console.log(error);
-        // alert('API実行時はCORS問題を解決すること。');
-        console.log('失敗しました');
-      });
     }
   };
   // 選択した蔵元の銘柄一覧を取得
@@ -206,55 +203,25 @@ export const SelectArea: React.FC<PropsType> = (props: PropsType) => {
       console.log(array);
 
       const arrayBrand: Array<Brand> = [];
-          const arrayNameSelectFlag: Array<boolean> = [];
-          array.map((bra: Brand) => {
-            // 蔵元が一致かつ銘柄が空以外を抽出
-            if (bra.breweryId === breweries[index].id && bra.name !== '') {
-              arrayBrand.push(bra);
-              arrayNameSelectFlag.push(false);
-            }
-            return 0;
-          });
-          // API実行結果をbrandsに格納
-          setBrands(arrayBrand);
-          setbrandsSelectFlag(arrayNameSelectFlag);
+      const arrayNameSelectFlag: Array<boolean> = [];
+      array.map((bra: Brand) => {
+        // 蔵元が一致かつ銘柄が空以外を抽出
+        if (bra.breweryId === breweries[index].id && bra.name !== '') {
+          arrayBrand.push(bra);
+          arrayNameSelectFlag.push(false);
+        }
+        return 0;
+      });
+      // API実行結果をbrandsに格納
+      setBrands(arrayBrand);
+      setbrandsSelectFlag(arrayNameSelectFlag);
     } else {
       // 全銘柄を取得済みであれば抽出処理のみ
       const arrayBrand = allBrands.filter((bra) => {
-        return bra.breweryId === breweries[index].id && bra.name !== ''
+        return bra.breweryId === breweries[index].id && bra.name !== '';
       });
       setBrands(arrayBrand);
     }
-    // fetch(getApiUrlBrands(stubMode), { mode: 'cors' })
-    //   .then((response) => {
-    //     return response.json();
-    //   })
-    //   .then((data) => {
-    //     // ToDo API実行を1回だけにしたい。
-    //     // 実行有無フラグをグローバルに持たせて、OBJはディープコピーすること。
-    //     // 一度OBJをJSON形式に戻して再代入するとスムーズ。
-    //     // 配列の中身をループで回して取得
-    //     // 選択された産地の蔵元だけを抽出
-    //     const array: Array<Brand> = [];
-    //     const arrayNameSelectFlag: Array<boolean> = [];
-    //     data.brands.map((bra: Brand) => {
-    //       // 蔵元が一致かつ銘柄が空以外を抽出
-    //       if (bra.breweryId === breweries[index].id && bra.name !== '') {
-    //         array.push(bra);
-    //         arrayNameSelectFlag.push(false);
-    //       }
-    //       return 0;
-    //     });
-    //     // API実行結果をbrandsに格納
-    //     setBrands(array);
-    //     setbrandsSelectFlag(arrayNameSelectFlag);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     // alert('API実行時はCORS問題を解決すること。');
-    //     console.log('失敗しました');
-    //   });
-
   };
 
   // 銘柄フレーバー取得
