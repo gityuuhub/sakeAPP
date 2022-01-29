@@ -1,27 +1,38 @@
 /*
-DynamoDBにsakeOneCommnetテーブルがある。
-  テーブル構造
-    brandId：（Number型＠パーティションキー）酒のIDが入る。
-    comment：（文字列型）brandIdの酒に対するコメント。
-    starPoint: （Number型）0-5の星の数が入る。
-  DBリソースへのアクセスは、下記sakeOneCommnetのURL。
-  RestFullなAPIを目指す。
-  メソッド
-    Get：バラメータにbrandIdを指定することで登録されているコメントを返す。
-      こんな感じ：https://url?brandId=0
-      ※レスポンスはAPI-GWの総合レスポンスで整形。
-    Post：バラメータでbrandIdとcommentを指定した内容をDBに登録できる。
-      ※パーテションキーが重複したら上書きされるっぽい。RDSと勝手が違う。
-      こんな感じ：https://url
-      params:{"brandId":0,"comment":"レモンサワーからの梅酒（売り切れ直前）", "starPoint":5}
-ノーガードなので変なアクセス受けると店じまい予定。
-*/
+ * DynamoDBにsakeOneCommnetテーブルがある。
+ * ------------------------------------------------------------
+ * テーブル構造
+ *   brandId：（Number型＠パーティションキー）酒のIDが入る。
+ *   comment：（文字列型）brandIdの酒に対するコメント。
+ *   starPoint: （Number型）0-5の星の数が入る。
+ * ------------------------------------------------------------
+ * DBリソースへのアクセスは、下記sakeOneCommnetのURL。
+ * RestFullなAPIを目指す。
+ * ノーガードなので変なアクセス受けると店じまい予定。
+ * ------------------------------------------------------------
+ * メソッド
+ *   Get：バラメータにbrandIdを指定することで登録されているコメントを返す。
+ *     こんな感じ：https://url?brandId=0
+ *     ※レスポンスはAPI-GWの総合レスポンスで整形。
+ *   Post：バラメータでbrandIdとcommentを指定した内容をDBに登録できる。
+ *     ※パーテションキーが重複したら上書きされるっぽい。RDSと勝手が違う。
+ *     こんな感じ：https://url
+ *     params:{"brandId":0,"comment":"レモンサワーからの梅酒（売り切れ直前）", "starPoint":5}
+ */
 import axios from 'axios';
 
+// ワンコメリソースへのアクセスURL
 const sakeOneCommnetUrl =
   'https://2ygmpjbho2.execute-api.ap-northeast-1.amazonaws.com/dynamoAPI/sakeonecomment';
 
+// getリクエストの返り値型
 type returnType = {
+  comment: string;
+  starPoint: number;
+};
+// postリクエストで投げるデータ型
+type postParams = {
+  brandId: number;
   comment: string;
   starPoint: number;
 };
@@ -43,5 +54,12 @@ export const getOneCommentStar = (props: number): Promise<returnType> => {
 };
 
 // 引数のbrand（酒）に引数のcommentをDB登録する
-//export const getOneComment = () => {
-//};
+export const postOneComment = (params: postParams) => {
+  console.log(params);
+  axios.post(
+    sakeOneCommnetUrl,
+    { params: params },
+    { headers: { 'content-type': 'application/json' } },
+  );
+  // 残：エラーハンドリング
+};
