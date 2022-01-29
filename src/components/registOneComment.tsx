@@ -21,28 +21,23 @@ const onClickSendComment = (brandId: number, comment: string, starPoint: number)
 };
 
 export const RegistOneComment = () => {
+  // ユーザ入力値をuseStateで管理
   const [brandId, setBrandId] = useState(1);
   const [comment, setComment] = useState('');
   const [starPoint, setStarPoint] = useState(0);
 
-  const bChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setBrandId(() => Number(e.target.value));
-  };
-  const cChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setComment(() => e.target.value);
-  };
-
   return (
     <>
-      <p>brandIdを指定してコメントをDBに登録する処理を適当に書いた。</p>
-      {/* コンポーネントに移したいがとりあえず書く */}
+      <p>brandIdを指定してコメントと★starPoint★をaxios先生がDBに登録する。</p>
       <TextField
         id="brandId"
         value={brandId}
         type="number"
         label="brandId"
         variant="outlined"
-        onChange={bChange}
+        onChange={(e) => {
+          setBrandId(Number(e.target.value));
+        }}
       />
       <TextField
         fullWidth
@@ -50,7 +45,9 @@ export const RegistOneComment = () => {
         value={comment}
         label="comment"
         variant="outlined"
-        onChange={cChange}
+        onChange={(e) => {
+          setComment(e.target.value);
+        }}
       />
       <Typography component="legend">★starPointSystem by R★</Typography>
       <Rating
@@ -61,6 +58,7 @@ export const RegistOneComment = () => {
         }}
       />
       <br />
+      {/* ボタン押下でuseState管理している入力値を飛ばす */}
       <Button
         variant="contained"
         color="secondary"
