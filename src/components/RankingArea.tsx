@@ -31,10 +31,6 @@ export const RankingArea: React.FC = () => {
           return response.json();
         })
         .then((data) => {
-          // console.log('flavor-tags(フレーバータグ一覧):');
-          // console.log(data);
-          // console.log('フレーバータグ一覧取り出す');
-          // console.log(data.tags);
           setFlavorTags(data.tags);
         })
         .catch((error) => {

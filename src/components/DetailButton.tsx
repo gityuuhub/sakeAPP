@@ -34,10 +34,6 @@ export const DetailButton: React.FC<PropsType> = (props: PropsType) => {
     selectBrandName = item.name;
   }
 
-  // useEffect(() => {
-  //
-  // }, [selectBrandId]);
-
   const handleOpen = () => {
     // フレーバー情報をリセット
     setBrandDetailRadar([
