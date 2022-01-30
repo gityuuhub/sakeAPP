@@ -43,7 +43,7 @@ const getBrandName = (stubMode: boolean, brandId: number): Promise<string> => {
         return response.json();
       })
       .then((data) => {
-        data.brands.map((bra: BrandType) => {
+        data.brands.map((bra: Brand) => {
           // 蔵元が一致かつ銘柄が空以外を抽出
           if (bra.id === brandId) {
             // API実行後にidと一致するnameを返却
@@ -78,39 +78,39 @@ export const SelectFlavor: React.FC = () => {
 
   const onChangeFlavor1 = (event: Event, newValue: number | number[]) => {
     if (typeof newValue === 'number') {
-    inputLikeFlavor.f1 = newValue;
-    setInputLikeFlavor(inputLikeFlavor);
-  }
+      inputLikeFlavor.f1 = newValue;
+      setInputLikeFlavor(inputLikeFlavor);
+    }
   };
   const onChangeFlavor2 = (event: Event, newValue: number | number[]) => {
     if (typeof newValue === 'number') {
-    inputLikeFlavor.f2 = newValue;
-    setInputLikeFlavor(inputLikeFlavor);
-  }
+      inputLikeFlavor.f2 = newValue;
+      setInputLikeFlavor(inputLikeFlavor);
+    }
   };
   const onChangeFlavor3 = (event: Event, newValue: number | number[]) => {
     if (typeof newValue === 'number') {
-    inputLikeFlavor.f3 = newValue;
-    setInputLikeFlavor(inputLikeFlavor);
-  }
+      inputLikeFlavor.f3 = newValue;
+      setInputLikeFlavor(inputLikeFlavor);
+    }
   };
   const onChangeFlavor4 = (event: Event, newValue: number | number[]) => {
     if (typeof newValue === 'number') {
-    inputLikeFlavor.f4 = newValue;
-    setInputLikeFlavor(inputLikeFlavor);
-  }
+      inputLikeFlavor.f4 = newValue;
+      setInputLikeFlavor(inputLikeFlavor);
+    }
   };
   const onChangeFlavor5 = (event: Event, newValue: number | number[]) => {
     if (typeof newValue === 'number') {
-    inputLikeFlavor.f5 = newValue;
-    setInputLikeFlavor(inputLikeFlavor);
-  }
+      inputLikeFlavor.f5 = newValue;
+      setInputLikeFlavor(inputLikeFlavor);
+    }
   };
   const onChangeFlavor6 = (event: Event, newValue: number | number[]) => {
     if (typeof newValue === 'number') {
-    inputLikeFlavor.f6 = newValue;
-    setInputLikeFlavor(inputLikeFlavor);
-  }
+      inputLikeFlavor.f6 = newValue;
+      setInputLikeFlavor(inputLikeFlavor);
+    }
   };
 
   // 入力値と似た銘柄を検索

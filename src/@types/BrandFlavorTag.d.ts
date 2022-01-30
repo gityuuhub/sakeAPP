@@ -1,5 +1,5 @@
 // 銘柄フレーバータグ
 type BrandFlavorTag = {
-  brandId: number
-  tagIds: number[]
-}
+  brandId: number;
+  tagIds: number[];
+};

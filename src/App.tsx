@@ -22,6 +22,7 @@ export const App: React.FC = () => {
     areas: false, // 「都道府県から選ぶ」の表示フラグ
     selectFlavor: false, // 「フレーバーから選ぶ」の表示フラグ
     ranking: false, // 「ランキング」の表示フラグ
+    searchBrand: false, // 「銘柄から検索」の表示フラグ
   });
 
   // ステップバーの現在の段階

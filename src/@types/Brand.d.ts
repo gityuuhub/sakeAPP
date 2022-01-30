@@ -1,4 +1,4 @@
-type BrandType = {
+type Brand = {
   id: number;
   name: string;
   breweryId: number;

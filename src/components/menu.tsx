@@ -11,6 +11,7 @@ type ContentsShoFlagType = {
   areas: boolean;
   selectFlavor: boolean;
   ranking: boolean;
+  searchBrand: boolean;
 };
 type PropsType = {
   contentsShowFlag: ContentsShoFlagType;
@@ -34,6 +35,7 @@ export const Menu: React.FC<PropsType> = (props: PropsType) => {
       areas: true,
       selectFlavor: false,
       ranking: false,
+      searchBrand: false,
     });
   };
 
@@ -45,6 +47,7 @@ export const Menu: React.FC<PropsType> = (props: PropsType) => {
       areas: false,
       selectFlavor: false,
       ranking: true,
+      searchBrand: false,
     });
   };
 
@@ -56,6 +59,19 @@ export const Menu: React.FC<PropsType> = (props: PropsType) => {
       areas: false,
       selectFlavor: true,
       ranking: false,
+      searchBrand: false,
+    });
+  };
+
+  const onClickSearchBrand = () => {
+    // 銘柄名から検索押下時：銘柄名から検索を表示
+    setContentsShowFlag({
+      init: false,
+      stepBar: false,
+      areas: false,
+      selectFlavor: false,
+      ranking: false,
+      searchBrand: true,
     });
   };
 
@@ -91,6 +107,16 @@ export const Menu: React.FC<PropsType> = (props: PropsType) => {
             onClick={onClickRanking}
           >
             ランキング
+          </Button>
+        </Link>
+        <Link to="/main">
+          <Button
+            style={{ width: '60%' }}
+            variant="contained"
+            color="primary"
+            onClick={onClickSearchBrand}
+          >
+            銘柄名から検索
           </Button>
         </Link>
         <br />

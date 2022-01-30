@@ -1,6 +1,5 @@
-
 type Brewery = {
-  id: number
-  name: string
-  areaId: number
-}
+  id: number;
+  name: string;
+  areaId: number;
+};

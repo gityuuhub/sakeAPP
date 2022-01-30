@@ -2,60 +2,42 @@ import React, { useEffect, useContext } from 'react';
 import Grid from '@mui/material/Grid';
 import { DataGrid, GridCellParams } from '@material-ui/data-grid';
 
-import { getApiUrlRankings, getApiUrlBrands, getApiUrlFlavorTags} from '../function/getApiUrl';
+import { getApiUrlRankings, getApiUrlFlavorTags } from '../function/getApiUrl';
+import { getAllBrand } from '../function/getAllBrand';
 import { MainContext } from '../providers/mainProvider';
 import { DetailButton } from './DetailButton';
 
 export const RankingArea: React.FC = () => {
-  const { stubMode, allBrands, setAllBrands, rankings, setRankings, flavorTags, setFlavorTags } = useContext(MainContext);
+  const { stubMode, allBrands, setAllBrands, rankings, setRankings, flavorTags, setFlavorTags } =
+    useContext(MainContext);
 
   useEffect(() => {
-    // 全銘柄一覧取得を一度もしていなかったら
-    if (allBrands.length === 0) {
-      // 全銘柄一覧の取得
-      console.log('銘柄一覧の取得する！！！');
-      fetch(getApiUrlBrands(stubMode), { mode: 'cors' })
+    // 直接、await getAllBrand(stubMode)は呼べない
+    // useEffectはpromiseを返さない（useEffectに渡す関数の戻り値はcleanup）
+    const getData = async() => {
+      // 全銘柄一覧取得を一度もしていなかったら
+      if (allBrands.length === 0) {
+        const array = await getAllBrand(stubMode);
+        setAllBrands(array);
+      }
+    }
+    getData();
+
+    // フレーバータグ一覧を一度も取得していなかったら
+    if (flavorTags.length === 0) {
+      // フレーバータグ一覧の取得
+      fetch(getApiUrlFlavorTags(stubMode), { mode: 'cors' })
         .then((response) => {
           return response.json();
         })
         .then((data) => {
-          const array: Array<BrandType> = [];
-          data.brands.map((bra: BrandType) => {
-            // 銘柄が空以外を抽出
-            if (bra.name !== '') {
-              // 銘柄名と銘柄idと蔵元idを1つのOBJ化
-              // {name: bra.name, id: bra.id, breweryId: bra.breweryId}
-              array.push(bra);
-            }
-          });
-          // API実行結果をallBrandsに格納
-          setAllBrands(array);
+          setFlavorTags(data.tags);
         })
         .catch((error) => {
           console.log(error);
-          // alert('API実行時はCORS問題を解決すること。');
+          alert('flavor-tagsでAPI実行時に失敗');
           console.log('失敗しました');
         });
-    }
-    // フレーバータグ一覧を一度も取得していなかったら
-    if (flavorTags.length === 0) {
-    // フレーバータグ一覧の取得
-    fetch(getApiUrlFlavorTags(stubMode), { mode: 'cors' })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        // console.log('flavor-tags(フレーバータグ一覧):');
-        // console.log(data);
-        // console.log('フレーバータグ一覧取り出す');
-        // console.log(data.tags);
-        setFlavorTags(data.tags);
-      })
-      .catch((error) => {
-        console.log(error);
-        alert('flavor-tagsでAPI実行時に失敗');
-        console.log('失敗しました');
-      });
     }
   }, []);
 

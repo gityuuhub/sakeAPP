@@ -5,6 +5,7 @@ import { StepBar } from '../components/stepBar';
 import { SelectArea } from '../components/SelectArea';
 import { RankingArea } from '../components/RankingArea';
 import { SelectFlavor } from '../components/SelectFlavor';
+import { SearchBrand } from '../components/SearchBrand';
 
 type PropsType = {
   contentsShowFlag: {
@@ -12,6 +13,7 @@ type PropsType = {
     areas: boolean;
     selectFlavor: boolean;
     ranking: boolean;
+    searchBrand: boolean;
   };
   nowStep: number;
   setNowStep: (param: number) => void;
@@ -29,6 +31,7 @@ export const SakenowaContent: React.FC<PropsType> = (props: PropsType) => {
       {contentsShowFlag.areas && <SelectArea setNowStep={setNowStep} />}
       {contentsShowFlag.selectFlavor && <SelectFlavor />}
       {contentsShowFlag.ranking && <RankingArea />}
+      {contentsShowFlag.searchBrand && <SearchBrand />}
     </>
   );
 };

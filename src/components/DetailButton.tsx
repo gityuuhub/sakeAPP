@@ -5,7 +5,7 @@ import { GridRowId } from '@material-ui/data-grid';
 import { DetailDialog } from './DetailDialog';
 import { MainContext } from '../providers/mainProvider';
 import { BrandDetail } from './brandDetail';
-import {getApiUrlFlavorCharts} from '../function/getApiUrl';
+import { getApiUrlFlavorCharts } from '../function/getApiUrl';
 
 type PropsType = {
   rowId: GridRowId;
@@ -13,29 +13,26 @@ type PropsType = {
 
 export const DetailButton: React.FC<PropsType> = (props: PropsType) => {
   const { rowId } = props;
-  const rowIdNum = Number(rowId)!=null ? Number(rowId): -1;
+  const rowIdNum = Number(rowId) != null ? Number(rowId) : -1;
   const { stubMode, flavorTags, rankings } = useContext(MainContext);
 
   const [open, setOpen] = useState(false);
 
   // 選択銘柄のフレーバーデータ
-  const [brandDetailRadar, setBrandDetailRadar]
-    = useState<{ [key: string]: string | number }[]>([]);
+  const [brandDetailRadar, setBrandDetailRadar] = useState<{ [key: string]: string | number }[]>(
+    [],
+  );
 
   // 詳細を押した銘柄のidと名前を取得する
   // item : {"rank": number, "score": number, "brandId": number, "id": number, "name": string}
   const item = rankings.find((b) => b.id === rowIdNum);
-  let selectBrandId= -1;
-  let selectBrandName="";
+  let selectBrandId = -1;
+  let selectBrandName = '';
 
-  if(item != undefined){
+  if (item != undefined) {
     selectBrandId = item.brandId;
     selectBrandName = item.name;
   }
-
-  // useEffect(() => {
-  //
-  // }, [selectBrandId]);
 
   const handleOpen = () => {
     // フレーバー情報をリセット
@@ -88,11 +85,11 @@ export const DetailButton: React.FC<PropsType> = (props: PropsType) => {
         詳細
       </Button>
       <DetailDialog open={open} handleClose={handleClose} title={selectBrandName}>
-      <BrandDetail
-        brandDetailRadar={brandDetailRadar}
-        selectBrandId={selectBrandId}
-        flavorTags={flavorTags}
-      />
+        <BrandDetail
+          brandDetailRadar={brandDetailRadar}
+          selectBrandId={selectBrandId}
+          flavorTags={flavorTags}
+        />
       </DetailDialog>
     </>
   );
