@@ -44,6 +44,8 @@ export const Menu: React.FC<PropsType> = (props: PropsType) => {
   };
 
   const onClickRanking = () => {
+    // ページ遷移処理
+    pageUrl('/main');
     // ランキングボタン押下時：ランキングを表示
     setContentsShowFlag({
       init: false,
@@ -56,6 +58,8 @@ export const Menu: React.FC<PropsType> = (props: PropsType) => {
   };
 
   const onClickFlavor = () => {
+    // ページ遷移処理
+    pageUrl('/main');
     // フレーバーから選ぶ押下時：フレーバーを表示
     setContentsShowFlag({
       init: false,
@@ -68,6 +72,8 @@ export const Menu: React.FC<PropsType> = (props: PropsType) => {
   };
 
   const onClickSearchBrand = () => {
+    // ページ遷移処理
+    pageUrl('/main');
     // 銘柄名から検索押下時：銘柄名から検索を表示
     setContentsShowFlag({
       init: false,
@@ -86,33 +92,27 @@ export const Menu: React.FC<PropsType> = (props: PropsType) => {
         <Button style={{ width: '60%' }} variant="contained" color="primary" onClick={onClickArea}>
           産地から選ぶ
         </Button>
-        <Link to="/main">
-          <Button
-            style={{ width: '60%' }}
-            variant="contained"
-            color="primary"
-            onClick={onClickFlavor}>
-            フレーバーから選ぶ
-          </Button>
-        </Link>{' '}
-        <Link to="/main">
-          <Button
-            style={{ width: '60%' }}
-            variant="contained"
-            color="primary"
-            onClick={onClickRanking}>
-            ランキング
-          </Button>
-        </Link>
-        <Link to="/main">
-          <Button
-            style={{ width: '60%' }}
-            variant="contained"
-            color="primary"
-            onClick={onClickSearchBrand}>
-            銘柄名から検索
-          </Button>
-        </Link>
+        <Button
+          style={{ width: '60%' }}
+          variant="contained"
+          color="primary"
+          onClick={onClickFlavor}>
+          フレーバーから選ぶ
+        </Button>
+        <Button
+          style={{ width: '60%' }}
+          variant="contained"
+          color="primary"
+          onClick={onClickRanking}>
+          ランキング
+        </Button>
+        <Button
+          style={{ width: '60%' }}
+          variant="contained"
+          color="primary"
+          onClick={onClickSearchBrand}>
+          銘柄名から検索
+        </Button>
         <br />
         <br />
         <Link to="/hogehoge">
