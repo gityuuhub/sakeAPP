@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import Box from '@mui/material/Box';
 
@@ -23,8 +23,12 @@ type PropsType = {
 
 export const Menu: React.FC<PropsType> = (props: PropsType) => {
   const { contentsShowFlag, setContentsShowFlag, setNowStep, drawerOpen, setDrawerOpen } = props;
+  // ページ遷移用変数
+  const pageUrl = useNavigate();
 
   const onClickArea = () => {
+    // ページ遷移処理
+    pageUrl('/main');
     // ステップバーの表示を更新
     setNowStep(0);
     // 産地から選ぶ押下時：ステップバーと産地を表示
@@ -79,23 +83,15 @@ export const Menu: React.FC<PropsType> = (props: PropsType) => {
     <>
       <h3>メニュー</h3>
       <Box m={2}>
+        <Button style={{ width: '60%' }} variant="contained" color="primary" onClick={onClickArea}>
+          産地から選ぶ
+        </Button>
         <Link to="/main">
           <Button
             style={{ width: '60%' }}
             variant="contained"
             color="primary"
-            onClick={onClickArea}
-          >
-            産地から選ぶ
-          </Button>
-        </Link>
-        <Link to="/main">
-          <Button
-            style={{ width: '60%' }}
-            variant="contained"
-            color="primary"
-            onClick={onClickFlavor}
-          >
+            onClick={onClickFlavor}>
             フレーバーから選ぶ
           </Button>
         </Link>{' '}
@@ -104,8 +100,7 @@ export const Menu: React.FC<PropsType> = (props: PropsType) => {
             style={{ width: '60%' }}
             variant="contained"
             color="primary"
-            onClick={onClickRanking}
-          >
+            onClick={onClickRanking}>
             ランキング
           </Button>
         </Link>
@@ -114,8 +109,7 @@ export const Menu: React.FC<PropsType> = (props: PropsType) => {
             style={{ width: '60%' }}
             variant="contained"
             color="primary"
-            onClick={onClickSearchBrand}
-          >
+            onClick={onClickSearchBrand}>
             銘柄名から検索
           </Button>
         </Link>
