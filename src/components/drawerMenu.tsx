@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button, Drawer, FormGroup, FormControlLabel, Switch } from '@material-ui/core';
 import Box from '@mui/material/Box';
 import {
@@ -24,6 +24,7 @@ type PropsType = {
 export const DrawerMenu: React.FC<PropsType> = (props: PropsType) => {
   const { drawerOpen, setDrawerOpen } = props;
   const { stubMode, setStubMode } = useContext(MainContext);
+  const pageUrl = useNavigate(); // ページ遷移用変数
 
   // ドロワーメニューの開閉状態変更
   const drawerToggleOpen = () => {
@@ -50,6 +51,11 @@ export const DrawerMenu: React.FC<PropsType> = (props: PropsType) => {
   const onClickTest = () => {
     // テストしたい処理に書き換えて
   };
+  // ワンコメ管理ボタン押下
+  const onClickOneComment = () => {
+    // ページ遷移処理
+    pageUrl('/onecomment');
+  };
 
   // スタブモードの切替
   const onChangeStubMode = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,8 +81,7 @@ export const DrawerMenu: React.FC<PropsType> = (props: PropsType) => {
                 style={{ width: '100%' }}
                 variant="contained"
                 color="secondary"
-                onClick={() => onClickNextPage()}
-              >
+                onClick={() => onClickNextPage()}>
                 産地一覧WEB遷移
               </Button>
             </a>
@@ -88,8 +93,7 @@ export const DrawerMenu: React.FC<PropsType> = (props: PropsType) => {
                 style={{ width: '100%' }}
                 variant="contained"
                 color="secondary"
-                onClick={() => onClickNextPage()}
-              >
+                onClick={() => onClickNextPage()}>
                 銘柄一覧WEB遷移
               </Button>
             </a>
@@ -100,8 +104,7 @@ export const DrawerMenu: React.FC<PropsType> = (props: PropsType) => {
                 style={{ width: '100%' }}
                 variant="contained"
                 color="secondary"
-                onClick={() => onClickNextPage()}
-              >
+                onClick={() => onClickNextPage()}>
                 蔵元一覧WEB遷移
               </Button>
             </a>
@@ -112,8 +115,7 @@ export const DrawerMenu: React.FC<PropsType> = (props: PropsType) => {
                 style={{ width: '100%' }}
                 variant="contained"
                 color="secondary"
-                onClick={() => onClickNextPage()}
-              >
+                onClick={() => onClickNextPage()}>
                 フレーバWEB遷移
               </Button>
             </a>
@@ -124,8 +126,7 @@ export const DrawerMenu: React.FC<PropsType> = (props: PropsType) => {
               style={{ width: '100%' }}
               variant="contained"
               color="secondary"
-              onClick={() => onClickCors()}
-            >
+              onClick={() => onClickCors()}>
               CORS問題再現
             </Button>
           </div>
@@ -134,8 +135,7 @@ export const DrawerMenu: React.FC<PropsType> = (props: PropsType) => {
               style={{ width: '100%' }}
               variant="contained"
               color="secondary"
-              onClick={() => onClickTest()}
-            >
+              onClick={() => onClickTest()}>
               いろいろテスト
             </Button>
           </div>
@@ -148,16 +148,13 @@ export const DrawerMenu: React.FC<PropsType> = (props: PropsType) => {
             />
           </FormGroup>
           <div>
-            <Link to="/onecomment">
-              <Button
-                style={{ width: '100%' }}
-                variant="contained"
-                color="secondary"
-                onClick={() => onClickTest()}
-              >
-                ワンコメ管理
-              </Button>
-            </Link>
+            <Button
+              style={{ width: '100%' }}
+              variant="contained"
+              color="secondary"
+              onClick={() => onClickOneComment()}>
+              ワンコメ管理
+            </Button>
           </div>
         </Box>
       </Drawer>
