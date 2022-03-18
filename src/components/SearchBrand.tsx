@@ -12,13 +12,14 @@ import { getAllBrand } from '../function/getAllBrand';
 import { MainContext } from '../providers/mainProvider';
 // import { DetailButton } from './DetailButton';
 
+// コメント見てください。マージ必要ありません。
 export const SearchBrand: React.FC = () => {
   const { stubMode, allBrands, setAllBrands, flavorTags, setFlavorTags } =
     useContext(MainContext);
 
   // 検索ワード
   const [ keyWord , setKeyWord ] = useState('');
-  
+
   // 検索結果
   const [ arrayBrand , setArrayBrand ] = useState<Brand[]>([]);
 
