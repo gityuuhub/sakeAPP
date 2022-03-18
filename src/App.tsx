@@ -54,7 +54,7 @@ export const App: React.FC = () => {
         </Grid>
         <Grid item xs={8}>
           <Routes>
-            <Route path="/" element={<TsukidashiContent />}></Route>
+            <Route path="/index.html" element={<TsukidashiContent />}></Route>
             <Route
               path="/main"
               element={
@@ -63,8 +63,7 @@ export const App: React.FC = () => {
                   setNowStep={setNowStep}
                   nowStep={nowStep}
                 />
-              }
-            ></Route>
+              }></Route>
             {/* hogehogeメニュー */}
             <Route path="/hogehoge" element={<HogehogeContent />}></Route>
             {/* 管理者メニュー */}
