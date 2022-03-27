@@ -51,6 +51,12 @@ export const DrawerMenu: React.FC<PropsType> = (props: PropsType) => {
   const onClickTest = () => {
     // テストしたい処理に書き換えて
   };
+
+  // API TESTボタン押下
+  const onClickApiTest = () => {
+    // ページ遷移処理
+    pageUrl('/apitest');
+  };
   // ワンコメ管理ボタン押下
   const onClickOneComment = () => {
     // ページ遷移処理
@@ -137,6 +143,15 @@ export const DrawerMenu: React.FC<PropsType> = (props: PropsType) => {
               color="secondary"
               onClick={() => onClickTest()}>
               いろいろテスト
+            </Button>
+          </div>
+          <div>
+            <Button
+              style={{ width: '100%' }}
+              variant="contained"
+              color="secondary"
+              onClick={() => onClickApiTest()}>
+              API TEST
             </Button>
           </div>
           <br />
